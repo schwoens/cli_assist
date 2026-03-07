@@ -4,9 +4,9 @@ use std::env::{self, split_paths};
 use std::fs;
 use std::str::FromStr;
 
-use crate::command_tokenizer::TokenizedCmd;
 use crate::levenshtein::get_levenshtein_distance;
-use crate::man_page_parser::parse_command_options;
+use crate::line_tokenizer::TokenizedLine;
+use crate::man_page_parser::parse_command_long_options;
 
 pub mod command_tokenizer;
 pub mod line_tokenizer;
@@ -45,16 +45,24 @@ struct Args {
 
 fn correct_command(input: &str) -> Result<String> {
 
-    let commands = input.split(";|><");
+    let tokenized_line = TokenizedLine::from_str(input);
+    let commands = tokenized_line?.get_commands_with_options()?;
+    let mut output = input.to_string();
 
-    let tokenized_cmd = TokenizedCmd::from_str(input)?;
+    for command in commands {
+        let closest_command_match = get_closest_command_match(&command.name)?;
 
-    let command = tokenized_cmd.command();
+        output = output.replace(&command.name, &closest_command_match);
 
-    let closest_match = get_closest_match(&command)?;
-    let options = parse_command_options(&closest_match);
+        let long_options = command.get_long_options();
 
-    Ok(closest_match)
+        for option in long_options {
+            let closest_option_match = get_closest_long_option_match(&closest_command_match, &option)?;
+
+            output = output.replace(&option, &closest_option_match);
+        }
+    }
+    Ok(output)
 }
 
 fn get_commands() -> Result<Vec<String>> {
@@ -71,7 +79,7 @@ fn get_commands() -> Result<Vec<String>> {
     Ok(entries)
 }
 
-fn get_closest_match(input: &str) -> Result<String> {
+fn get_closest_command_match(input: &str) -> Result<String> {
     let commands = get_commands()?;
 
     let mut results = Vec::new();
@@ -83,9 +91,67 @@ fn get_closest_match(input: &str) -> Result<String> {
 
     results.sort_by(|a, b| a.1.cmp(&b.1));
 
-    let closest_match = results.first().context("no results")?;
-
-    println!("distance: {}", closest_match.1);
+    let closest_match = results.first().context("no command matches")?;
 
     Ok(closest_match.0.clone())
+}
+
+fn get_closest_long_option_match(command: &str, option: &str) -> Result<String> {
+    let long_options = parse_command_long_options(command)?;
+
+    println!("{}", command);
+    println!("{:?}", long_options);
+
+    let mut results = Vec::new();
+
+    for opt in long_options {
+        let distance = get_levenshtein_distance(option, &opt);
+        results.push((opt, distance));
+    }
+
+    results.sort_by(|a, b| a.1.cmp(&b.1));
+
+    let closest_match = results.first().context("no option matches")?;
+
+    Ok(closest_match.0.to_string())
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn correct_command_name_only() {
+        let result = correct_command("chmad").expect("unable to correct command");
+        let expected = "chmod";
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn correct_long_option_only() {
+        let result = correct_command("ls --allmost-all").expect("unable to correct command");
+        let expected = "ls --almost-all";
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn correct_command_name_and_long_option() {
+        let result = correct_command("mcdir --partens").expect("unable to correct command");
+        let expected = "mkdir --parents";
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn correct_multiple_commands() {
+        let result = correct_command("ls --allmost-all | mcdir --partens").expect("unable to correct command");
+        let expected = "ls --almost-all | mkdir --parents";
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn correct_correct_command_with_correct_long_options() {
+        let result = correct_command("touch --no-create").expect("unable to correct command");
+        let expected = "touch --no-create";
+        assert_eq!(result, expected);
+    }
 }
