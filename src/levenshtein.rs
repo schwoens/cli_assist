@@ -1,3 +1,5 @@
+use anyhow::{Context, Result};
+
 pub fn get_levenshtein_distance(s1: &str, s2: &str) -> usize {
     if s1 == s2 {
         return 0;
@@ -48,6 +50,30 @@ pub fn get_levenshtein_distance(s1: &str, s2: &str) -> usize {
     result
 }
 
+pub fn get_closest_match(input: &str, list: &[String]) -> Result<Option<String>> {
+    const DISTANCE_THRESHOLD: usize = 3;
+
+    let mut results = list
+        .iter()
+        .filter_map(|e| {
+            let distance = get_levenshtein_distance(input, e);
+            if distance < DISTANCE_THRESHOLD {
+                Some((e, distance))
+            } else {
+                None
+            }
+        })
+        .collect::<Vec<(&String, usize)>>();
+    
+    results.sort_by(|a, b| a.1.cmp(&b.1));
+
+    if results.is_empty() {
+        return Ok(None)
+    }
+
+    Ok(Some(results.first().expect("no command matches").0.to_string()))
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -63,6 +89,13 @@ mod test {
     fn levenshtein_distance_2() {
         let result = get_levenshtein_distance("uninformed", "uniformed");
         let expected = 1;
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn levenshtein_distance_3() {
+        let result = get_levenshtein_distance("--", "--help");
+        let expected = 4;
         assert_eq!(result, expected);
     }
 }

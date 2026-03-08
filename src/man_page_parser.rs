@@ -3,20 +3,20 @@ use std::collections::HashSet;
 use anyhow::Result;
 use regex::Regex;
 
-pub fn parse_command_long_options(command: &str) -> Result<HashSet<String>> {
+pub fn parse_command_long_options(command: &str) -> Result<Vec<String>> {
     let mut page = get_man_page(command)?;
     let regex = Regex::new(r"--([a-z]|-)+")?;
-    let mut matches = HashSet::new();
+    let mut matches: HashSet<String> = HashSet::new();
 
     if page.is_none() {
-        page = Some(get_help_page(command)?);
+        page = get_help_page(command)?;
     }
 
     for m in regex.captures_iter(&page.unwrap()) {
         matches.insert(m[0].to_string());
     }
 
-    Ok(matches)
+    Ok(matches.iter().cloned().collect())
 }
 
 fn get_man_page(command: &str) -> Result<Option<String>> {
@@ -34,13 +34,19 @@ fn get_man_page(command: &str) -> Result<Option<String>> {
     Ok(Some(man_page))
 }
 
-fn get_help_page(command: &str) -> Result<String> {
+fn get_help_page(command: &str) -> Result<Option<String>> {
     let help_output = std::process::Command::new("sh")
         .arg("-c")
         .arg(format!("{} --help", command))
         .output()?;
 
-    Ok(String::from_utf8(help_output.stdout)?)
+    let help_page = String::from_utf8(help_output.stdout)?;
+
+    if help_page.is_empty() {
+        return Ok(None);
+    }
+
+    Ok(Some(help_page))
 }
 
 #[cfg(test)]
@@ -48,8 +54,36 @@ mod test {
     use super::*;
 
     #[test]
+    fn get_man_page_ls() {
+        let result = get_man_page("ls")
+            .expect("failed to get man page")
+            .expect("man page is none");
+        assert!(!result.is_empty());
+    }
+
+    #[test]
+    fn get_man_page_cargo() {
+        let result = get_man_page("cargo").expect("failed to get man page");
+        assert!(result.is_none());
+    }
+
+    #[test]
+    fn get_help_page_cargo() {
+        let result = get_help_page("cargo")
+            .expect("failed to get help page")
+            .expect("help page is none");
+        assert!(!result.is_empty());
+    }
+
+    #[test]
+    fn get_help_page_gibberish() {
+        let result = get_help_page("alkdfja").expect("failed to get help page");
+        assert!(result.is_none());
+    }
+
+    #[test]
     fn parse_ls_long_options() {
-        let result = parse_command_long_options("ls").expect("failed parsing options");
+        let result = HashSet::from_iter(parse_command_long_options("ls").expect("failed parsing options"));
         let expected = HashSet::from([
             String::from("--all"),
             String::from("--almost-all"),
