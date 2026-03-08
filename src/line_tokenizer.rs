@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result};
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct TokenizedLine {
@@ -133,9 +133,7 @@ impl FromStr for TokenizedLine {
                 '>' | '<' => {
                     if escape_character.is_none() {
                         match current_token_type {
-                            TokenType::Space | TokenType::Redirect | TokenType::NumericArgument => {
-                                ()
-                            }
+                            TokenType::Space | TokenType::Redirect | TokenType::NumericArgument => {}
                             _ => {
                                 tokens
                                     .push(Token(current_token_type.clone(), current_token.clone()));

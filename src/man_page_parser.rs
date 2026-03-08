@@ -3,37 +3,44 @@ use std::collections::HashSet;
 use anyhow::Result;
 use regex::Regex;
 
-pub fn parse_command_all_options(command: &str) -> Result<Vec<String>> {
-    let man_page = get_man_page(command)?;
-    let regex = Regex::new(r"(-([a-zA-Z]))|(--([a-z]|-)+)")?;
-    let mut matches = vec![];
-
-    for m in regex.captures_iter(&man_page) {
-        matches.push(m[0].to_string()); 
-    }
-
-    Ok(matches)
-}
-
 pub fn parse_command_long_options(command: &str) -> Result<HashSet<String>> {
-    let man_page = get_man_page(command)?;
+    let mut page = get_man_page(command)?;
     let regex = Regex::new(r"--([a-z]|-)+")?;
     let mut matches = HashSet::new();
 
-    for m in regex.captures_iter(&man_page) {
+    if page.is_none() {
+        page = Some(get_help_page(command)?);
+    }
+
+    for m in regex.captures_iter(&page.unwrap()) {
         matches.insert(m[0].to_string());
     }
 
     Ok(matches)
 }
 
-fn get_man_page(command: &str) -> Result<String> {
+fn get_man_page(command: &str) -> Result<Option<String>> {
     let man_output = std::process::Command::new("sh")
         .arg("-c")
         .arg(format!("man {}", command))
         .output()?;
 
-    Ok(String::from_utf8(man_output.stdout)?)
+    let man_page = String::from_utf8(man_output.stdout)?;
+
+    if man_page.is_empty() {
+        return Ok(None);
+    }
+
+    Ok(Some(man_page))
+}
+
+fn get_help_page(command: &str) -> Result<String> {
+    let help_output = std::process::Command::new("sh")
+        .arg("-c")
+        .arg(format!("{} --help", command))
+        .output()?;
+
+    Ok(String::from_utf8(help_output.stdout)?)
 }
 
 #[cfg(test)]

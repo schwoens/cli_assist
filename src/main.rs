@@ -2,6 +2,7 @@ use anyhow::{Context, Result};
 use clap::Parser;
 use std::env::{self, split_paths};
 use std::fs;
+use std::process::{Command, exit};
 use std::str::FromStr;
 
 use crate::levenshtein::get_levenshtein_distance;
@@ -9,30 +10,27 @@ use crate::line_tokenizer::TokenizedLine;
 use crate::man_page_parser::parse_command_long_options;
 
 pub mod command_tokenizer;
+pub mod levenshtein;
 pub mod line_tokenizer;
 pub mod man_page_parser;
-pub mod levenshtein;
 
 fn main() {
-    // println!("{}", get_current_shell());
-    //
-    // let shell = env::var("SHELL").expect("SHELL variable is not set");
-    // println!("{}", shell);
-    //
-    // let previous_command = Command::new(shell)
-    //     .arg("-c")
-    //     .arg("history --max 2")
-    //     .output()
-    //     .expect("failed to fetch history");
-    //
-    // let previous_output = String::from_utf8(previous_command.stdout).expect("output is not a string");
-    //
-    // println!("{}", previous_output);
-
     let args = Args::parse();
 
-    match correct_command(&args.input) {
-        Ok(c) => println!("Did you mean {}?", c),
+    let command = match args.command {
+        Some(c) => c,
+        None => match get_previous_command() {
+            Ok(c) => c,
+            Err(e) => {
+                println!("{}", e);
+                exit(0);
+            }
+        }
+    };
+
+    match correct_command(&command) {
+        Ok(Some(c)) => println!("Did you mean {}?", c),
+        Ok(None) => println!("No correction available"),
         Err(e) => eprintln!("Error correcting command: {}", e),
     }
 }
@@ -40,11 +38,33 @@ fn main() {
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
-    input: String,
+    #[arg(short, long)]
+    command: Option<String>,
+
+    #[arg(short, long)]
+    shell: Option<String>,
 }
 
-fn correct_command(input: &str) -> Result<String> {
+fn get_previous_command() -> Result<String> {
+    let shell = env::var("SHELL").context("SHELL enviroment variable is not set")?;
 
+    let history = String::from_utf8(
+        Command::new(shell)
+            .arg("-c")
+            .arg("history")
+            .output()?
+            .stdout,
+    )?;
+
+    Ok(history
+        .lines()
+        .take(2)
+        .last()
+        .context("shell history is empty")?
+        .to_string())
+}
+
+fn correct_command(input: &str) -> Result<Option<String>> {
     let tokenized_line = TokenizedLine::from_str(input);
     let commands = tokenized_line?.get_commands_with_options()?;
     let mut output = input.to_string();
@@ -57,12 +77,18 @@ fn correct_command(input: &str) -> Result<String> {
         let long_options = command.get_long_options();
 
         for option in long_options {
-            let closest_option_match = get_closest_long_option_match(&closest_command_match, &option)?;
+            let closest_option_match =
+                get_closest_long_option_match(&closest_command_match, &option)?;
 
             output = output.replace(&option, &closest_option_match);
         }
     }
-    Ok(output)
+
+    if output == input {
+        return Ok(None);
+    }
+
+    Ok(Some(output))
 }
 
 fn get_commands() -> Result<Vec<String>> {
@@ -98,9 +124,6 @@ fn get_closest_command_match(input: &str) -> Result<String> {
 
 fn get_closest_long_option_match(command: &str, option: &str) -> Result<String> {
     let long_options = parse_command_long_options(command)?;
-
-    println!("{}", command);
-    println!("{:?}", long_options);
 
     let mut results = Vec::new();
 
@@ -143,7 +166,8 @@ mod test {
 
     #[test]
     fn correct_multiple_commands() {
-        let result = correct_command("ls --allmost-all | mcdir --partens").expect("unable to correct command");
+        let result = correct_command("ls --allmost-all | mcdir --partens")
+            .expect("unable to correct command");
         let expected = "ls --almost-all | mkdir --parents";
         assert_eq!(result, expected);
     }
