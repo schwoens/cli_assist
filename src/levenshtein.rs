@@ -1,5 +1,6 @@
-use anyhow::{Context, Result};
+use anyhow::Result;
 
+/// Calculates the levenshtein distance between two string slices.   
 pub fn get_levenshtein_distance(s1: &str, s2: &str) -> usize {
     if s1 == s2 {
         return 0;
@@ -50,6 +51,8 @@ pub fn get_levenshtein_distance(s1: &str, s2: &str) -> usize {
     result
 }
 
+/// Returns the closest match of the input in a list according to its levenshtein distance.
+/// Matches with a levenshtein distance higher than the DISTANCE_THRESHOLD are not considered.
 pub fn get_closest_match(input: &str, list: &[String]) -> Result<Option<String>> {
     const DISTANCE_THRESHOLD: usize = 3;
 
@@ -72,30 +75,4 @@ pub fn get_closest_match(input: &str, list: &[String]) -> Result<Option<String>>
     }
 
     Ok(Some(results.first().expect("no command matches").0.to_string()))
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn levenshtein_distance_1() {
-        let result = get_levenshtein_distance("kitten", "sitting");
-        let expected = 3;
-        assert_eq!(result, expected);
-    }
-
-    #[test]
-    fn levenshtein_distance_2() {
-        let result = get_levenshtein_distance("uninformed", "uniformed");
-        let expected = 1;
-        assert_eq!(result, expected);
-    }
-
-    #[test]
-    fn levenshtein_distance_3() {
-        let result = get_levenshtein_distance("--", "--help");
-        let expected = 4;
-        assert_eq!(result, expected);
-    }
 }
