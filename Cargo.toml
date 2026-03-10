@@ -7,4 +7,3 @@ edition = "2024"
 anyhow = "1.0.102"
 clap = { version = "4.5.60", features = ["derive"] }
 regex = "1.12.3"
-sysinfo = "0.38.2"
