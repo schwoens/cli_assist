@@ -1,5 +1,10 @@
 use anyhow::{Context, Result, bail};
-use std::{env::{self, split_paths}, fs, process::Command};
+use std::{
+    env::{self, split_paths},
+    fs,
+    path::PathBuf,
+    process::Command,
+};
 
 /// Returns the previously executed command by querying the shell history.
 pub fn get_previous_command(shell: &str) -> Result<String> {
@@ -29,7 +34,12 @@ pub fn get_available_commands() -> Result<Vec<String>> {
         .flat_map(|sp| {
             fs::read_dir(sp)
                 .expect("Invalid PATH variable")
-                .map(|e| e.unwrap().file_name().into_string().expect("Invalid unicode in file name"))
+                .map(|e| {
+                    e.unwrap()
+                        .file_name()
+                        .into_string()
+                        .expect("Invalid unicode in file name")
+                })
                 .collect::<Vec<_>>()
         })
         .collect();
@@ -46,3 +56,35 @@ pub fn get_shell_from_env_variable() -> Result<String> {
     Ok(shell_var)
 }
 
+/// Validates if a given shell is valid by checking the /etc/shells file.
+/// It finds the path of a shell by using the `which` command.
+/// Fails if the shells file is not readable or if the which command doesn't exist.
+pub fn shell_is_valid(shell: &str) -> Result<bool> {
+    const SHELLS_FILE_PATH: &str = "/etc/shells";
+    let shell_path = get_command_path(shell)?;
+
+    match shell_path {
+        Some(sp) => Ok(fs::read_to_string(SHELLS_FILE_PATH)?
+            .lines()
+            .any(|l| l == &sp)),
+        None => Ok(false),
+    }
+}
+
+/// Returns the Path of a given command by calling the `which` command.
+/// Fails if the which command doesn't exist.
+pub fn get_command_path(command: &str) -> Result<Option<PathBuf>> {
+    let path = String::from_utf8(
+        Command::new("sh")
+            .arg("-c")
+            .arg(format!("which {}", command))
+            .output()?
+            .stdout,
+    )?;
+
+    if !path.is_empty() {
+        Ok(Some(path.trim().into()))
+    } else {
+        Ok(None)
+    }
+}

@@ -1,9 +1,9 @@
-use anyhow::Result;
+use anyhow::{bail, Result};
 use clap::Parser;
 use std::{io::{self, Write}, process::Command};
 use std::str::FromStr;
 
-use crate::{doc_parse::parse_command_long_options, shell_query::get_shell_from_env_variable};
+use crate::{doc_parse::parse_command_long_options, shell_query::{get_shell_from_env_variable, shell_is_valid}};
 use crate::levenshtein::get_closest_match;
 use crate::shell_query::{get_available_commands, get_previous_command};
 use crate::tokenize::TokenizedLine;
@@ -34,6 +34,10 @@ fn run(args: &Args) -> Result<()> {
         Some(s) => s,
         None => &get_shell_from_env_variable()?,
     };
+
+    if !shell_is_valid(shell)? {
+        bail!("{} is not a valid shell", shell);
+    }
 
     let command = match &args.command {
         Some(c) => c,

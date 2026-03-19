@@ -6,4 +6,6 @@ mod main;
 mod tokenize;
 #[cfg(test)]
 mod doc_parse;
+#[cfg(test)]
+mod shell_query;
 
