@@ -14,7 +14,7 @@ pub struct Token(pub TokenType, pub String);
 pub enum TokenType {
     Argument,
     Literal,
-    Pipe,
+    Separator,
     Command,
     Space,
     ShortOption,
@@ -112,7 +112,7 @@ impl FromStr for TokenizedLine {
                                 current_token.clear();
                                 current_token_type = TokenType::Space;
                             }
-                            TokenType::Pipe | TokenType::Redirect => (),
+                            TokenType::Separator | TokenType::Redirect => (),
                             _ => current_token_type = TokenType::Space,
                         }
                     } else {
@@ -145,17 +145,17 @@ impl FromStr for TokenizedLine {
                         current_token.push(char)
                     }
                 }
-                '|' => {
+                '|' | '&' | ';' => {
                     if escape_character.is_none() {
                         match current_token_type {
-                            TokenType::Space | TokenType::Redirect => (),
+                            TokenType::Space | TokenType::Redirect | TokenType::Separator => (),
                             _ => {
                                 tokens
                                     .push(Token(current_token_type.clone(), current_token.clone()));
                                 current_token.clear();
                             }
                         }
-                        current_token_type = TokenType::Pipe;
+                        current_token_type = TokenType::Separator;
                     } else {
                         current_token.push(char);
                     }
@@ -169,7 +169,7 @@ impl FromStr for TokenizedLine {
                 _ => {
                     match current_token_type {
                         TokenType::Space => current_token_type = TokenType::Argument,
-                        TokenType::Pipe => current_token_type = TokenType::Command,
+                        TokenType::Separator => current_token_type = TokenType::Command,
                         TokenType::Redirect => current_token_type = TokenType::Literal,
                         _ => (),
                     }

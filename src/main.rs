@@ -3,7 +3,7 @@ use clap::Parser;
 use std::{io::{self, Write}, process::Command};
 use std::str::FromStr;
 
-use crate::doc_parse::parse_command_long_options;
+use crate::{doc_parse::parse_command_long_options, shell_query::get_shell_from_env_variable};
 use crate::levenshtein::get_closest_match;
 use crate::shell_query::{get_available_commands, get_previous_command};
 use crate::tokenize::TokenizedLine;
@@ -30,12 +30,17 @@ fn main() -> Result<()> {
 }
 
 fn run(args: &Args) -> Result<()> {
-    let command = match &args.command {
-        Some(c) => c,
-        None => &get_previous_command(args.shell.clone())?,
+    let shell = match &args.shell {
+        Some(s) => s,
+        None => &get_shell_from_env_variable()?,
     };
 
-    match correct_command(command)? {
+    let command = match &args.command {
+        Some(c) => c,
+        None => &get_previous_command(shell)?,
+    };
+
+    match correct_command(command, shell)? {
         Some(c) if user_confirms(&c)? => {
             run_command(&c, &args.shell.clone().unwrap_or(String::from("sh")))
         }
@@ -57,7 +62,7 @@ fn run_command(command: &str, shell: &str) -> Result<()> {
 
 /// Tries to correct the given line.
 /// Returns Some if the correction was successful, otherwise it will return None.
-fn correct_command(input: &str) -> Result<Option<String>> {
+fn correct_command(input: &str, shell: &str) -> Result<Option<String>> {
     let tokenized_line = TokenizedLine::from_str(input);
     let contained_commands = tokenized_line?.get_commands_with_options()?;
     let mut output = input.to_string();
@@ -74,6 +79,7 @@ fn correct_command(input: &str) -> Result<Option<String>> {
         let long_options = command.get_long_options();
         let available_long_options = parse_command_long_options(
             &closest_command_match.clone().unwrap_or(input.to_string()),
+            shell,
         )?;
 
         for option in long_options {

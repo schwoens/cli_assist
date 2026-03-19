@@ -51,6 +51,85 @@ fn tokenize_command_argument_and_pipe() {
 }
 
 #[test]
+fn tokenize_command_argument_and_pipe_and_ampersand() {
+    let result = TokenizedLine::from_str("echo hello |& cat").expect("failed to tokenize");
+    let expected = TokenizedLine {
+        tokens: vec![
+            Token(TokenType::Command, String::from("echo")),
+            Token(TokenType::Argument, String::from("hello")),
+            Token(TokenType::Command, String::from("cat")),
+        ],
+    };
+    assert_eq!(result, expected);
+}
+
+#[test]
+fn tokenize_command_argument_and_pipe_and_ampersand_reverse() {
+    let result = TokenizedLine::from_str("echo hello &| cat").expect("failed to tokenize");
+    let expected = TokenizedLine {
+        tokens: vec![
+            Token(TokenType::Command, String::from("echo")),
+            Token(TokenType::Argument, String::from("hello")),
+            Token(TokenType::Command, String::from("cat")),
+        ],
+    };
+    assert_eq!(result, expected);
+}
+
+#[test]
+fn tokenize_command_argument_and_double_pipe() {
+    let result = TokenizedLine::from_str("echo hello || cat").expect("failed to tokenize");
+    let expected = TokenizedLine {
+        tokens: vec![
+            Token(TokenType::Command, String::from("echo")),
+            Token(TokenType::Argument, String::from("hello")),
+            Token(TokenType::Command, String::from("cat")),
+        ],
+    };
+    assert_eq!(result, expected);
+}
+
+#[test]
+fn tokenize_command_argument_and_double_ampersand() {
+    let result = TokenizedLine::from_str("echo hello && cat").expect("failed to tokenize");
+    let expected = TokenizedLine {
+        tokens: vec![
+            Token(TokenType::Command, String::from("echo")),
+            Token(TokenType::Argument, String::from("hello")),
+            Token(TokenType::Command, String::from("cat")),
+        ],
+    };
+    assert_eq!(result, expected);
+}
+
+#[test]
+fn tokenize_command_argument_and_semicolon() {
+    let result = TokenizedLine::from_str("echo hello; echo world").expect("failed to tokenize");
+    let expected = TokenizedLine {
+        tokens: vec![
+            Token(TokenType::Command, String::from("echo")),
+            Token(TokenType::Argument, String::from("hello")),
+            Token(TokenType::Command, String::from("echo")),
+            Token(TokenType::Argument, String::from("world")),
+        ],
+    };
+    assert_eq!(result, expected);
+}
+
+#[test]
+fn tokenize_command_argument_and_ampersand() {
+    let result = TokenizedLine::from_str("top & echo hello").expect("failed to tokenize");
+    let expected = TokenizedLine {
+        tokens: vec![
+            Token(TokenType::Command, String::from("top")),
+            Token(TokenType::Command, String::from("echo")),
+            Token(TokenType::Argument, String::from("hello")),
+        ],
+    };
+    assert_eq!(result, expected);
+}
+
+#[test]
 fn tokenize_command_argument_and_output_redirect() {
     let result = TokenizedLine::from_str("echo hello > file").expect("failed to tokenize");
     let expected = TokenizedLine {

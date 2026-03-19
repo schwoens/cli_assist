@@ -3,13 +3,14 @@ use std::collections::HashSet;
 use anyhow::Result;
 use regex::Regex;
 
-pub fn parse_command_long_options(command: &str) -> Result<Vec<String>> {
-    let mut page = get_man_page(command)?;
+/// Returns the available long options for a given command
+pub fn parse_command_long_options(command: &str, shell: &str) -> Result<Vec<String>> {
+    let mut page = get_man_page(command, shell)?;
     let regex = Regex::new(r"--([a-z]|-)+")?;
     let mut matches: HashSet<String> = HashSet::new();
 
     if page.is_none() {
-        page = get_help_page(command)?;
+        page = get_help_page(command, shell)?;
     }
 
     for m in regex.captures_iter(&page.unwrap()) {
@@ -19,8 +20,10 @@ pub fn parse_command_long_options(command: &str) -> Result<Vec<String>> {
     Ok(matches.iter().cloned().collect())
 }
 
-pub fn get_man_page(command: &str) -> Result<Option<String>> {
-    let man_output = std::process::Command::new("sh")
+/// Executes the `man` command for a given command and returns its output. 
+/// Returns None if no man page exists for the given command.
+pub fn get_man_page(command: &str, shell: &str) -> Result<Option<String>> {
+    let man_output = std::process::Command::new(shell)
         .arg("-c")
         .arg(format!("man {}", command))
         .output()?;
@@ -34,8 +37,10 @@ pub fn get_man_page(command: &str) -> Result<Option<String>> {
     Ok(Some(man_page))
 }
 
-pub fn get_help_page(command: &str) -> Result<Option<String>> {
-    let help_output = std::process::Command::new("sh")
+/// Executes a given command with the `--help` option and returns its output.
+/// Returns None if no help page exists.
+pub fn get_help_page(command: &str, shell: &str) -> Result<Option<String>> {
+    let help_output = std::process::Command::new(shell)
         .arg("-c")
         .arg(format!("{} --help", command))
         .output()?;

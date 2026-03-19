@@ -2,20 +2,9 @@ use anyhow::{Context, Result, bail};
 use std::{env::{self, split_paths}, fs, process::Command};
 
 /// Returns the previously executed command by querying the shell history.
-pub fn get_previous_command(override_shell: Option<String>) -> Result<String> {
-    let shell = match override_shell {
-        Some(s) => s,
-        None => {
-            let shell_var = env::var("SHELL").context("SHELL enviroment variable is not set")?;
-            if shell_var.is_empty() {
-                bail!("SHELL enviroment variable is empty");
-            }
-            shell_var
-        }
-    };
-
+pub fn get_previous_command(shell: &str) -> Result<String> {
     let history = String::from_utf8(
-        Command::new(&shell)
+        Command::new(shell)
             .arg("-c")
             .arg("history")
             .output()
@@ -32,18 +21,28 @@ pub fn get_previous_command(override_shell: Option<String>) -> Result<String> {
 }
 
 /// Returns a Vec of all available commands on the system by listing every file in every PATH
-/// directory.
+/// directory. Fails if the PATH environment variable is not or invalid.
 pub fn get_available_commands() -> Result<Vec<String>> {
     let path = env::var("PATH")?;
     let paths = split_paths(&path);
     let entries: Vec<String> = paths
         .flat_map(|sp| {
             fs::read_dir(sp)
-                .unwrap()
-                .map(|e| e.unwrap().file_name().into_string().unwrap())
+                .expect("Invalid PATH variable")
+                .map(|e| e.unwrap().file_name().into_string().expect("Invalid unicode in file name"))
                 .collect::<Vec<_>>()
         })
         .collect();
     Ok(entries)
+}
+
+/// Returns the content of the SHELL environment variable.
+/// Fails if the environment variable is not set or empty.
+pub fn get_shell_from_env_variable() -> Result<String> {
+    let shell_var = env::var("SHELL").context("SHELL environment variable is not set")?;
+    if shell_var.is_empty() {
+        bail!("SHELL enviroment variable is empty");
+    }
+    Ok(shell_var)
 }
 

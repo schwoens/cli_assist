@@ -4,7 +4,7 @@ use crate::doc_parse::{get_help_page, get_man_page, parse_command_long_options};
 
 #[test]
 fn get_man_page_ls() {
-    let result = get_man_page("ls")
+    let result = get_man_page("ls", "sh")
         .expect("failed to get man page")
         .expect("man page is none");
     assert!(!result.is_empty());
@@ -12,13 +12,13 @@ fn get_man_page_ls() {
 
 #[test]
 fn get_man_page_cargo() {
-    let result = get_man_page("cargo").expect("failed to get man page");
+    let result = get_man_page("cargo", "sh").expect("failed to get man page");
     assert!(result.is_none());
 }
 
 #[test]
 fn get_help_page_cargo() {
-    let result = get_help_page("cargo")
+    let result = get_help_page("cargo", "sh")
         .expect("failed to get help page")
         .expect("help page is none");
     assert!(!result.is_empty());
@@ -26,13 +26,13 @@ fn get_help_page_cargo() {
 
 #[test]
 fn get_help_page_gibberish() {
-    let result = get_help_page("alkdfja").expect("failed to get help page");
+    let result = get_help_page("alkdfja", "sh").expect("failed to get help page");
     assert!(result.is_none());
 }
 
 #[test]
 fn parse_ls_long_options() {
-    let result = HashSet::from_iter(parse_command_long_options("ls").expect("failed parsing options"));
+    let result = HashSet::from_iter(parse_command_long_options("ls", "sh").expect("failed parsing options"));
     let expected = HashSet::from([
         String::from("--all"),
         String::from("--almost-all"),
