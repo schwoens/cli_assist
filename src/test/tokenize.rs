@@ -1,5 +1,5 @@
 use std::str::FromStr;
-use crate::tokenize::{CommandWithOptions, Token, TokenType, TokenizedLine};
+use crate::tokenize::{TokenizedCommand, Token, TokenType, TokenizedLine};
 
 #[test]
 fn tokenize_command_and_long_option() {
@@ -301,7 +301,7 @@ fn get_commands_with_options() {
         ],
     };
     let result = tokenized_line.get_commands_with_options().expect("failed to get commands with options");
-    let expected = vec![CommandWithOptions {
+    let expected = vec![TokenizedCommand {
         name: String::from("ls"),
         options: vec![
             Token(TokenType::LongOption, String::from("--all")),

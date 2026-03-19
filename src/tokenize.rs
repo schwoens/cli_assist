@@ -24,12 +24,12 @@ pub enum TokenType {
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub struct CommandWithOptions {
+pub struct TokenizedCommand {
     pub name: String,
     pub options: Vec<Token>,
 }
 
-impl CommandWithOptions {
+impl TokenizedCommand {
     pub fn get_long_options(&self) -> Vec<String> {
         self.options
             .iter()
@@ -40,7 +40,7 @@ impl CommandWithOptions {
 }
 
 impl TokenizedLine {
-    pub fn get_commands_with_options(&self) -> Result<Vec<CommandWithOptions>> {
+    pub fn get_commands_with_options(&self) -> Result<Vec<TokenizedCommand>> {
 
         let mut commands = Vec::new();
         let mut current_command_name = None;
@@ -52,7 +52,7 @@ impl TokenizedLine {
                     current_command_name = Some(token.1.clone())
                 }
                 TokenType::Command if current_command_name.is_some() => {
-                    commands.push(CommandWithOptions {
+                    commands.push(TokenizedCommand {
                         name: current_command_name.unwrap(),
                         options: current_options.clone(),
                     });
@@ -64,7 +64,7 @@ impl TokenizedLine {
                 _ => (),
             }
         }
-        commands.push(CommandWithOptions {
+        commands.push(TokenizedCommand {
             name: current_command_name.context("no command name")?,
             options: current_options,
         });
