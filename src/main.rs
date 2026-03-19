@@ -41,14 +41,16 @@ fn run(args: &Args) -> Result<()> {
     };
 
     match correct_command(command, shell)? {
-        Some(c) if user_confirms(&c)? => {
-            run_command(&c, &args.shell.clone().unwrap_or(String::from("sh")))
+        Some(c) => {
+            if user_confirms(&c)? {
+                run_command(&c, &args.shell.clone().unwrap_or(String::from("sh")))?
+            }
         }
         _ => {
             println!("No correction available");
-            Ok(())
         },
     }
+    Ok(())
 }
 
 /// Executes the given command in a given shell.
