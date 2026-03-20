@@ -3,7 +3,7 @@ use clap::Parser;
 use std::{io::{self, Write}, process::Command};
 use std::str::FromStr;
 
-use crate::{doc_parse::parse_command_long_options, shell_query::{get_shell_from_env_variable, shell_is_valid}};
+use crate::{doc_parse::parse_command_long_options, shell_query::{get_environment_variables, get_shell_from_env_variable, shell_is_valid}};
 use crate::levenshtein::get_closest_match;
 use crate::shell_query::{get_available_commands, get_previous_command};
 use crate::tokenize::TokenizedLine;
@@ -30,6 +30,7 @@ fn main() -> Result<()> {
 }
 
 fn run(args: &Args) -> Result<()> {
+
     let shell = match &args.shell {
         Some(s) => s,
         None => &get_shell_from_env_variable()?,
@@ -69,17 +70,27 @@ fn run_command(command: &str, shell: &str) -> Result<()> {
 /// Tries to correct the given line.
 /// Returns Some if the correction was successful, otherwise it will return None.
 fn correct_command(input: &str, shell: &str) -> Result<Option<String>> {
-    let tokenized_line = TokenizedLine::from_str(input);
-    let contained_commands = tokenized_line?.get_commands_with_options()?;
+    let tokenized_line = TokenizedLine::from_str(input)?;
+    let contained_commands = tokenized_line.get_commands_with_options()?;
+    let variables = tokenized_line.get_variables();
     let mut output = input.to_string();
 
+    let environment_variables = get_environment_variables();
     let available_commands = get_available_commands()?;
+
+    for variable in variables {
+        let closest_variable_match = &get_closest_match(&variable, &environment_variables)?;
+
+        if let Some(m) = closest_variable_match {
+            output = output.replace(&variable, m);
+        }
+    }
 
     for command in contained_commands {
         let closest_command_match = &get_closest_match(&command.name, &available_commands)?;
 
         if let Some(m) = closest_command_match {
-            output = output.replace(&command.name, m)
+            output = output.replace(&command.name, m);
         }
 
         let long_options = command.get_long_options();
@@ -112,7 +123,7 @@ fn user_confirms(correction: &str) -> Result<bool> {
     stdin.read_line(&mut input)?;
 
     match input.to_lowercase().as_str() {
-        "\n" | "y\n" => Ok(true),
+        "\n" | "y\n" | "yes\n" => Ok(true),
         _ => Ok(false),
     }
 }

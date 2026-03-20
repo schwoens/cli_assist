@@ -35,3 +35,17 @@ fn correct_correct_command_with_correct_long_options() {
     let expected = None;
     assert_eq!(result, expected);
 }
+
+#[test]
+fn correct_correct_command_with_variable_argument() {
+    let result = correct_command("echo $SMELL", "sh").expect("unable to correct command");
+    let expected = Some(String::from("echo $SHELL"));
+    assert_eq!(result, expected);
+}
+
+#[test]
+fn correct_correct_command_with_correct_variable_argument() {
+    let result = correct_command("echo $SHELL", "sh").expect("unable to correct command");
+    let expected = None;
+    assert_eq!(result, expected);
+}

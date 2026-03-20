@@ -9,6 +9,5 @@ fn get_command_path_valid() {
 #[test]
 fn get_command_path_invalid() {
     let result = get_command_path("asdfargawra").expect("failed to get command path");
-    println!("{:?}", result);
     assert!(result.is_none());
 }

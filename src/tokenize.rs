@@ -13,14 +13,15 @@ pub struct Token(pub TokenType, pub String);
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub enum TokenType {
     Argument,
-    Literal,
-    Separator,
     Command,
-    Space,
-    ShortOption,
+    Filename,
     LongOption,
-    Redirect,
     NumericArgument,
+    Redirect,
+    Separator,
+    ShortOption,
+    Space,
+    Variable,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -41,7 +42,6 @@ impl TokenizedCommand {
 
 impl TokenizedLine {
     pub fn get_commands_with_options(&self) -> Result<Vec<TokenizedCommand>> {
-
         let mut commands = Vec::new();
         let mut current_command_name = None;
         let mut current_options = Vec::new();
@@ -59,8 +59,12 @@ impl TokenizedLine {
                     current_command_name = Some(token.1.clone());
                     current_options.clear();
                 }
-                TokenType::LongOption if current_command_name.is_some() => current_options.push(token.clone()),
-                TokenType::ShortOption if current_command_name.is_some() => current_options.push(token.clone()),
+                TokenType::LongOption if current_command_name.is_some() => {
+                    current_options.push(token.clone())
+                }
+                TokenType::ShortOption if current_command_name.is_some() => {
+                    current_options.push(token.clone())
+                }
                 _ => (),
             }
         }
@@ -69,6 +73,18 @@ impl TokenizedLine {
             options: current_options,
         });
         Ok(commands)
+    }
+
+    pub fn get_variables(&self) -> Vec<String> {
+        self.tokens
+            .iter()
+            .filter_map(|t| {
+                match t.0 {
+                    TokenType::Variable => Some(t.1.clone()),
+                    _ => None,
+                }
+            })
+            .collect()
     }
 }
 
@@ -104,8 +120,9 @@ impl FromStr for TokenizedLine {
                         match current_token_type {
                             TokenType::Command
                             | TokenType::Argument
-                            | TokenType::Literal
+                            | TokenType::Filename
                             | TokenType::ShortOption
+                            | TokenType::Variable
                             | TokenType::LongOption => {
                                 tokens
                                     .push(Token(current_token_type.clone(), current_token.clone()));
@@ -133,7 +150,8 @@ impl FromStr for TokenizedLine {
                 '>' | '<' => {
                     if escape_character.is_none() {
                         match current_token_type {
-                            TokenType::Space | TokenType::Redirect | TokenType::NumericArgument => {}
+                            TokenType::Space | TokenType::Redirect | TokenType::NumericArgument => {
+                            }
                             _ => {
                                 tokens
                                     .push(Token(current_token_type.clone(), current_token.clone()));
@@ -166,11 +184,15 @@ impl FromStr for TokenizedLine {
                     }
                     current_token.push(char);
                 }
+                '$' => match escape_character {
+                    Some('\"') | None => current_token_type = TokenType::Variable,
+                    _ => current_token.push(char),
+                },
                 _ => {
                     match current_token_type {
                         TokenType::Space => current_token_type = TokenType::Argument,
                         TokenType::Separator => current_token_type = TokenType::Command,
-                        TokenType::Redirect => current_token_type = TokenType::Literal,
+                        TokenType::Redirect => current_token_type = TokenType::Filename,
                         _ => (),
                     }
                     current_token.push(char);

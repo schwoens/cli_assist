@@ -88,3 +88,8 @@ pub fn get_command_path(command: &str) -> Result<Option<PathBuf>> {
         Ok(None)
     }
 }
+
+/// Returns all environment variable keys.
+pub fn get_environment_variables() -> Vec<String> {
+    env::vars().map(|v| v.0).collect()
+}
