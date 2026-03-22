@@ -1,0 +1,2 @@
+termcolor==3.3.0
+typo==0.1.7
