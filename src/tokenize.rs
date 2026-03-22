@@ -14,7 +14,6 @@ pub struct Token(pub TokenType, pub String);
 pub enum TokenType {
     Argument,
     Command,
-    Filename,
     LongOption,
     NumericArgument,
     Redirect,
@@ -120,7 +119,6 @@ impl FromStr for TokenizedLine {
                         match current_token_type {
                             TokenType::Command
                             | TokenType::Argument
-                            | TokenType::Filename
                             | TokenType::ShortOption
                             | TokenType::Variable
                             | TokenType::LongOption => {
@@ -144,6 +142,12 @@ impl FromStr for TokenizedLine {
                             TokenType::ShortOption => current_token_type = TokenType::LongOption,
                             _ => (),
                         }
+                    }
+                    current_token.push(char);
+                }
+                '+' => {
+                    if escape_character.is_none() && current_token_type == TokenType::Space {
+                        current_token_type = TokenType::ShortOption;
                     }
                     current_token.push(char);
                 }
@@ -188,11 +192,19 @@ impl FromStr for TokenizedLine {
                     Some('\"') | None => current_token_type = TokenType::Variable,
                     _ => current_token.push(char),
                 },
+                '=' => match current_token_type {
+                    TokenType::ShortOption | TokenType::LongOption => {
+                        tokens.push(Token(current_token_type.clone(), current_token.clone()));
+                        current_token.clear();
+                        current_token_type = TokenType::Argument;
+                    },
+                    _ => current_token.push(char),
+                    
+                }
                 _ => {
                     match current_token_type {
-                        TokenType::Space => current_token_type = TokenType::Argument,
+                        TokenType::Space | TokenType::Redirect => current_token_type = TokenType::Argument,
                         TokenType::Separator => current_token_type = TokenType::Command,
-                        TokenType::Redirect => current_token_type = TokenType::Filename,
                         _ => (),
                     }
                     current_token.push(char);

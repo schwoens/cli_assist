@@ -26,6 +26,44 @@ fn tokenize_command_and_short_option() {
 }
 
 #[test]
+fn tokenize_command_and_short_option_with_plus_prefix() {
+    let result = TokenizedLine::from_str("ls +C").expect("failed to tokenize");
+    let expected = TokenizedLine {
+        tokens: vec![
+            Token(TokenType::Command, String::from("ls")),
+            Token(TokenType::ShortOption, String::from("+C")),
+        ],
+    };
+    assert_eq!(result, expected);
+}
+
+#[test]
+fn tokenize_command_and_long_option_with_argument() {
+    let result = TokenizedLine::from_str("ls --block-size=M").expect("failed to tokenize");
+    let expected = TokenizedLine {
+        tokens: vec![
+            Token(TokenType::Command, String::from("ls")),
+            Token(TokenType::LongOption, String::from("--block-size")),
+            Token(TokenType::Argument, String::from("M")),
+        ],
+    };
+    assert_eq!(result, expected);
+}
+
+#[test]
+fn tokenize_command_and_short_option_with_argument() {
+    let result = TokenizedLine::from_str("ls -B=M").expect("failed to tokenize");
+    let expected = TokenizedLine {
+        tokens: vec![
+            Token(TokenType::Command, String::from("ls")),
+            Token(TokenType::ShortOption, String::from("-B")),
+            Token(TokenType::Argument, String::from("M")),
+        ],
+    };
+    assert_eq!(result, expected);
+}
+
+#[test]
 fn tokenize_command_pipe_no_spaces() {
     let result = TokenizedLine::from_str("echo|cat").expect("failed to tokenize");
     let expected = TokenizedLine {
@@ -136,7 +174,7 @@ fn tokenize_command_argument_and_output_redirect() {
         tokens: vec![
             Token(TokenType::Command, String::from("echo")),
             Token(TokenType::Argument, String::from("hello")),
-            Token(TokenType::Filename, String::from("file")),
+            Token(TokenType::Argument, String::from("file")),
         ],
     };
     assert_eq!(result, expected);
@@ -148,7 +186,7 @@ fn tokenize_command_output_redirect_no_spaces() {
     let expected = TokenizedLine {
         tokens: vec![
             Token(TokenType::Command, String::from("ls")),
-            Token(TokenType::Filename, String::from("file")),
+            Token(TokenType::Argument, String::from("file")),
         ],
     };
     assert_eq!(result, expected);
@@ -161,7 +199,7 @@ fn tokenize_command_argument_and_append_output_redirect() {
         tokens: vec![
             Token(TokenType::Command, String::from("echo")),
             Token(TokenType::Argument, String::from("hello")),
-            Token(TokenType::Filename, String::from("file")),
+            Token(TokenType::Argument, String::from("file")),
         ],
     };
     assert_eq!(result, expected);
@@ -174,7 +212,31 @@ fn tokenize_command_argument_and_input_redirect() {
         tokens: vec![
             Token(TokenType::Command, String::from("echo")),
             Token(TokenType::Argument, String::from("hello")),
-            Token(TokenType::Filename, String::from("file")),
+            Token(TokenType::Argument, String::from("file")),
+        ],
+    };
+    assert_eq!(result, expected);
+}
+
+#[test]
+fn tokenize_command_argument_and_input_redirect_heredoc() {
+    let result = TokenizedLine::from_str("cat << EOF").expect("failed to tokenize");
+    let expected = TokenizedLine {
+        tokens: vec![
+            Token(TokenType::Command, String::from("cat")),
+            Token(TokenType::Argument, String::from("EOF")),
+        ],
+    };
+    assert_eq!(result, expected);
+}
+
+#[test]
+fn tokenize_command_argument_and_input_redirect_herestring() {
+    let result = TokenizedLine::from_str("cat <<< 'this is a herestring'").expect("failed to tokenize");
+    let expected = TokenizedLine {
+        tokens: vec![
+            Token(TokenType::Command, String::from("cat")),
+            Token(TokenType::Argument, String::from("this is a herestring")),
         ],
     };
     assert_eq!(result, expected);
@@ -187,7 +249,7 @@ fn tokenize_command_argument_and_numbered_output_redirect() {
         tokens: vec![
             Token(TokenType::Command, String::from("echo")),
             Token(TokenType::Argument, String::from("hello")),
-            Token(TokenType::Filename, String::from("file")),
+            Token(TokenType::Argument, String::from("file")),
         ],
     };
     assert_eq!(result, expected);
@@ -200,7 +262,7 @@ fn tokenize_command_numbered_output_redirect_no_spaces() {
         tokens: vec![
             Token(TokenType::Command, String::from("echo")),
             Token(TokenType::Argument, String::from("hello2")),
-            Token(TokenType::Filename, String::from("file")),
+            Token(TokenType::Argument, String::from("file")),
         ],
     };
     assert_eq!(result, expected);
@@ -225,7 +287,7 @@ fn tokenize_command_with_variable_argument_and_redirect() {
         tokens: vec![
             Token(TokenType::Command, String::from("echo")),
             Token(TokenType::Variable, String::from("SHELL")),
-            Token(TokenType::Filename, String::from("shell.log")),
+            Token(TokenType::Argument, String::from("shell.log")),
         ],
     };
     assert_eq!(result, expected);
@@ -347,7 +409,7 @@ fn tokenize_command_single_quote_escape_after_redirect_no_spaces() {
     let expected = TokenizedLine {
         tokens: vec![
             Token(TokenType::Command, String::from("ls")),
-            Token(TokenType::Filename, String::from("test\"")),
+            Token(TokenType::Argument, String::from("test\"")),
         ],
     };
     assert_eq!(result, expected);
@@ -358,7 +420,7 @@ fn get_commands_with_options() {
     let tokenized_line = TokenizedLine {
         tokens: vec![
             Token(TokenType::Command, String::from("ls")),
-            Token(TokenType::Filename, String::from("test")),
+            Token(TokenType::Argument, String::from("test")),
             Token(TokenType::LongOption, String::from("--all")),
             Token(TokenType::ShortOption, String::from("-C")),
         ],
