@@ -22,6 +22,9 @@ struct Args {
 
     #[arg(short, long)]
     shell: Option<String>,
+
+    #[arg(short, long, default_value_t=false)]
+    print: bool,
 }
 
 fn main() -> Result<()> {
@@ -47,6 +50,10 @@ fn run(args: &Args) -> Result<()> {
 
     match correct_command(command, shell)? {
         Some(c) => {
+            if args.print {
+                println!("{}", c);
+                return Ok(());
+            }
             if user_confirms(&c)? {
                 run_command(&c, &args.shell.clone().unwrap_or(String::from("sh")))?
             }
