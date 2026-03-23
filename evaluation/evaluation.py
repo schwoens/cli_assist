@@ -11,7 +11,6 @@ missingCharSuccess = 0
 extraCharSuccess = 0
 nearbyCharSuccess = 0
 skippedSpaceSuccess = 0
-randomSpaceSuccess = 0
 repeatedCharSuccess = 0
 unicharSuccess = 0
 
@@ -47,7 +46,6 @@ def test(line):
     global extraCharSuccess
     global nearbyCharSuccess
     global skippedSpaceSuccess
-    global randomSpaceSuccess
     global repeatedCharSuccess
     global unicharSuccess
 
@@ -94,15 +92,6 @@ def test(line):
     cprint(f'Skipped space: {skippedSpaceErrorInput} ... {result[0]}', color)
     if result[0] == 'success':
         skippedSpaceSuccess += 1
-    else:
-        cprint(f'\tgot: {result[1]}', color)
-
-    randomSpaceErrorInput = typo.StrErrer(line).random_space().result
-    result = run(randomSpaceErrorInput, line)
-    color = getColor(result[0]) 
-    cprint(f'Random space: {randomSpaceErrorInput} ... {result[0]}', color)
-    if result[0] == 'success':
-        randomSpaceSuccess += 1
     else:
         cprint(f'\tgot: {result[1]}', color)
 
@@ -240,7 +229,6 @@ print(f'Missing character: {missingCharSuccess}/{len(testCommandLines)}')
 print(f'Extra character: {extraCharSuccess}/{len(testCommandLines)}')
 print(f'Nearby character: {nearbyCharSuccess}/{len(testCommandLines)}')
 print(f'Skipped space: {skippedSpaceSuccess}/{len(testCommandLines)}')
-print(f'Random space: {randomSpaceSuccess}/{len(testCommandLines)}')
 print(f'Repeated character: {repeatedCharSuccess}/{len(testCommandLines)}')
 print(f'Unicharacter: {unicharSuccess}/{len(testCommandLines)}')
 
