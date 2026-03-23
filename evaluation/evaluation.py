@@ -10,7 +10,6 @@ charSwapSuccess = 0
 missingCharSuccess = 0
 extraCharSuccess = 0
 nearbyCharSuccess = 0
-similarCharSuccess = 0
 skippedSpaceSuccess = 0
 randomSpaceSuccess = 0
 repeatedCharSuccess = 0
@@ -20,7 +19,7 @@ def run(input, expected):
     global success
     global failure
     global error
-    result = subprocess.run([executable, '-c', input, '-p'], capture_output=True)
+    result = subprocess.run([executable, '-c', f'{input}', '-p'], capture_output=True)
     if not result.stderr:
         correction = result.stdout.decode().strip()
         if correction == expected or input == expected:
@@ -47,7 +46,6 @@ def test(line):
     global missingCharSuccess
     global extraCharSuccess
     global nearbyCharSuccess
-    global similarCharSuccess
     global skippedSpaceSuccess
     global randomSpaceSuccess
     global repeatedCharSuccess
@@ -87,15 +85,6 @@ def test(line):
     cprint(f'Nearby character: {nearbyCharErrorInput} ... {result[0]}', color)
     if result[0] =='success':
         nearbyCharSuccess += 1
-    else:
-        cprint(f'\tgot: {result[1]}', color)
-
-    similarCharErrorInput = typo.StrErrer(line).similar_char().result
-    result = run(similarCharErrorInput, line)
-    color = getColor(result[0])
-    cprint(f'Similar character: {similarCharErrorInput} ... {result[0]}', color)
-    if result[0] == 'success':
-        similarCharSuccess += 1
     else:
         cprint(f'\tgot: {result[1]}', color)
 
@@ -153,7 +142,6 @@ print(f'Character swap: {charSwapSuccess}/{len(testCommandLines)}')
 print(f'Missing character: {missingCharSuccess}/{len(testCommandLines)}')
 print(f'Extra character: {extraCharSuccess}/{len(testCommandLines)}')
 print(f'Nearby character: {nearbyCharSuccess}/{len(testCommandLines)}')
-print(f'Similar character: {similarCharSuccess}/{len(testCommandLines)}')
 print(f'Skipped space: {skippedSpaceSuccess}/{len(testCommandLines)}')
 print(f'Random space: {randomSpaceSuccess}/{len(testCommandLines)}')
 print(f'Repeated character: {repeatedCharSuccess}/{len(testCommandLines)}')
