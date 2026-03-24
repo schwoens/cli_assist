@@ -28,7 +28,7 @@ pub fn parse_command_long_options(command: &str, shell: &str) -> Result<Vec<Stri
 pub fn get_man_page(command: &str, shell: &str) -> Result<Option<String>> {
     let man_output = std::process::Command::new(shell)
         .arg("-c")
-        .arg(format!("man {}", command))
+        .arg(format!("timeout 2 man {} | cat", command))
         .output()?;
 
     let man_page = String::from_utf8(man_output.stdout)?;
@@ -45,7 +45,7 @@ pub fn get_man_page(command: &str, shell: &str) -> Result<Option<String>> {
 pub fn get_help_page(command: &str, shell: &str) -> Result<Option<String>> {
     let help_output = std::process::Command::new(shell)
         .arg("-c")
-        .arg(format!("{} --help", command))
+        .arg(format!("timeout 2 {} --help | cat", command))
         .output()?;
 
     let help_page = String::from_utf8(help_output.stdout)?;

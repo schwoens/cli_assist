@@ -131,7 +131,10 @@ impl FromStr for TokenizedLine {
                             _ => current_token_type = TokenType::Space,
                         }
                     } else {
-                        current_token_type = TokenType::Argument;
+                        match current_token_type {
+                            TokenType::Command => (),
+                            _ => current_token_type = TokenType::Argument,
+                        }
                         current_token.push(char);
                     }
                 }

@@ -416,6 +416,18 @@ fn tokenize_command_single_quote_escape_after_redirect_no_spaces() {
 }
 
 #[test]
+fn tokenize_command_with_missing_space() {
+    let result = TokenizedLine::from_str("awk'{print $5}' file").expect("failed to tokenize");
+    let expected = TokenizedLine {
+        tokens: vec![
+            Token(TokenType::Command, String::from("awk{print $5}")),
+            Token(TokenType::Argument, String::from("file")),
+        ],
+    };
+    assert_eq!(result, expected);
+}
+
+#[test]
 fn get_commands_with_options() {
     let tokenized_line = TokenizedLine {
         tokens: vec![

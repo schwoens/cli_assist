@@ -27,10 +27,10 @@ pub fn get_previous_command(shell: &str) -> Result<String> {
 
 /// Returns a Vec of all available commands on the system by listing every file in every PATH
 /// directory. Fails if the PATH environment variable is not or invalid.
-pub fn get_available_commands() -> Result<Vec<String>> {
+pub fn get_available_commands(shell: &str) -> Result<Vec<String>> {
     let path = env::var("PATH")?;
     let paths = split_paths(&path);
-    let entries: Vec<String> = paths
+    let mut executables: Vec<String> = paths
         .flat_map(|sp| {
             fs::read_dir(sp)
                 .expect("Invalid PATH variable")
@@ -43,7 +43,17 @@ pub fn get_available_commands() -> Result<Vec<String>> {
                 .collect::<Vec<_>>()
         })
         .collect();
-    Ok(entries)
+    let builtins: String = String::from_utf8(
+        Command::new(shell)
+            .arg("-c")
+            .arg("compgen -b")
+            .output()?
+            .stdout,
+    )?;
+    executables.extend(builtins.lines().map(|l| l.to_string()));
+    executables.sort();
+    executables.dedup();
+    Ok(executables)
 }
 
 /// Returns the content of the SHELL environment variable.

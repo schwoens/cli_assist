@@ -49,3 +49,10 @@ fn correct_correct_command_with_correct_variable_argument() {
     let expected = None;
     assert_eq!(result, expected);
 }
+
+#[test]
+fn correct_correct_cd() {
+    let result = correct_command("cd", "sh").expect("unable to correct command");
+    let expected = None;
+    assert_eq!(result, expected);
+}

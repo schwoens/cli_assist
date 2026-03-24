@@ -83,9 +83,13 @@ fn correct_command(input: &str, shell: &str) -> Result<Option<String>> {
     let mut output = input.to_string();
 
     let environment_variables = get_environment_variables();
-    let available_commands = get_available_commands()?;
+    let available_commands = get_available_commands(shell)?;
 
     for variable in variables {
+        if environment_variables.contains(&variable) {
+            continue;
+        }
+
         let closest_variable_match = &get_closest_match(&variable, &environment_variables)?;
 
         if let Some(m) = closest_variable_match {
@@ -94,7 +98,11 @@ fn correct_command(input: &str, shell: &str) -> Result<Option<String>> {
     }
 
     for command in contained_commands {
-        let closest_command_match = &get_closest_match(&command.name, &available_commands)?;
+        let closest_command_match = if !available_commands.contains(&command.name) { 
+            &get_closest_match(&command.name, &available_commands)?
+        } else {
+            &Some(command.name.to_string())
+        };
 
         if let Some(m) = closest_command_match {
             output = output.replace(&command.name, m);
@@ -107,6 +115,10 @@ fn correct_command(input: &str, shell: &str) -> Result<Option<String>> {
         )?;
 
         for option in long_options {
+            if available_long_options.contains(&option) {
+                continue;
+            }
+
             let closest_option_match = get_closest_match(&option, &available_long_options)?;
 
             output = output.replace(&option, &closest_option_match.unwrap_or(option.clone()));
