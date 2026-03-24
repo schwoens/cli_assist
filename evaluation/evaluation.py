@@ -3,8 +3,10 @@ import subprocess;
 from termcolor import cprint;
 
 success = 0
-failure = 0
+noCorrection = 0
+partialCorrection = 0
 error = 0
+skipped = 0
 
 charSwapSuccess = 0
 missingCharSuccess = 0
@@ -15,19 +17,36 @@ randomSpaceSuccess = 0
 repeatedCharSuccess = 0
 unicharSuccess = 0
 
+charSwapSkips = 0
+missingCharSkips = 0
+extraCharSkips = 0
+nearbyCharSkips = 0
+skippedSpaceSkips = 0
+randomSpaceSkips = 0
+repeatedCharSkips = 0
+unicharSkips = 0
+
 def run(input, expected):
     global success
-    global failure
+    global noCorrection
+    global partialCorrection
     global error
-    result = subprocess.run([executable, '-c', f'{input}', '-p'], capture_output=True)
+    global skipped
+    result = subprocess.run([executable, '-c', f"'{input}'", '-p'], capture_output=True)
     if not result.stderr:
         correction = result.stdout.decode().strip()
-        if correction == expected or input == expected:
+        if input == expected:
+            skipped += 1
+            return ('skipped', None)
+        elif correction == expected:
             success += 1
             return ('success', None)
+        elif correction == 'No correction available':
+            noCorrection += 1
+            return ('no correction', correction)
         else:
-            failure += 1;
-            return ('failure', correction)
+            partialCorrection += 1;
+            return ('partial correction', correction)
     else:
         error += 1
         return ('error', result.stderr)
@@ -36,10 +55,14 @@ def getColor(result):
     match result:
         case 'success':
             return 'green'
-        case 'failure':
+        case 'no correction':
             return 'yellow'
+        case 'partial correction':
+            return 'magenta'
         case 'error':
             return 'red'
+        case 'skipped':
+            return 'light_grey'
 
 def test(line):
     global charSwapSuccess
@@ -50,14 +73,24 @@ def test(line):
     global randomSpaceSuccess
     global repeatedCharSuccess
     global unicharSuccess
+    global charSwapSkips
+    global missingCharSkips
+    global extraCharSkips
+    global nearbyCharSkips
+    global skippedSpaceSkips
+    global randomSpaceSkips
+    global repeatedCharSkips
+    global unicharSkips
 
-    print(f'Testing: "{line}" ...\n')
+    print(f'Testing: "{line}" ... length: {len(line)}\n')
     charSwapErrorInput = typo.StrErrer(line).char_swap().result
     result = run(charSwapErrorInput, line)
     color = getColor(result[0])
     cprint(f'Character swap: {charSwapErrorInput} ... {result[0]}', color)
     if result[0] == 'success':
         charSwapSuccess += 1
+    elif result[0] == 'skipped':
+        charSwapSkips += 1
     else:
         cprint(f'\tgot: {result[1]}', color)
 
@@ -67,6 +100,8 @@ def test(line):
     cprint(f'Missing character: {missingCharErrorInput} ... {result[0]}', color)
     if result[0] == 'success':
         missingCharSuccess += 1
+    elif result[0] == 'skipped':
+        missingCharSkips += 1
     else:
         cprint(f'\tgot: {result[1]}', color)
 
@@ -76,6 +111,8 @@ def test(line):
     cprint(f'Extra character: {extraCharErrorInput} ... {result[0]}', color)
     if result[0] == 'success':
         extraCharSuccess += 1
+    elif result[0] == 'skipped':
+        extraCharSkips += 1
     else:
         cprint(f'\tgot: {result[1]}', color)
 
@@ -85,6 +122,8 @@ def test(line):
     cprint(f'Nearby character: {nearbyCharErrorInput} ... {result[0]}', color)
     if result[0] =='success':
         nearbyCharSuccess += 1
+    elif result[0] == 'skipped':
+        nearbyCharSkips += 1
     else:
         cprint(f'\tgot: {result[1]}', color)
 
@@ -94,6 +133,8 @@ def test(line):
     cprint(f'Skipped space: {skippedSpaceErrorInput} ... {result[0]}', color)
     if result[0] == 'success':
         skippedSpaceSuccess += 1
+    elif result[0] == 'skipped':
+        skippedSpaceSkips += 1
     else:
         cprint(f'\tgot: {result[1]}', color)
 
@@ -103,6 +144,8 @@ def test(line):
     cprint(f'Random space: {randomSpaceErrorInput} ... {result[0]}', color)
     if result[0] == 'success':
         randomSpaceSuccess += 1
+    elif result[0] == 'skipped':
+        randomSpaceSkips += 1
     else:
         cprint(f'\tgot: {result[1]}', color)
 
@@ -112,6 +155,8 @@ def test(line):
     cprint(f'Repeated character: {repeatedCharErrorInput} ... {result[0]}', color)
     if result[0] == 'success':
         repeatedCharSuccess += 1
+    elif result[0] == 'skipped':
+        repeatedCharSkips += 1
     else:
         cprint(f'\tgot: {result[1]}', color)
 
@@ -121,14 +166,14 @@ def test(line):
     cprint(f'Unicharacter: {unicharErrorInput} ... {result[0]}', color)
     if result[0] == 'success':
         unicharSuccess += 1
+    elif result[0] == 'skipped':
+        unicharSkips += 1
     else:
         cprint(f'\tgot: {result[1]}', color)
 
     print()
 
 testCommandLines = [
-    'awk \'{print $5}\' file',
-    'awk \'/foo/ {print $2}\' file > output',
     'cat --number file',
     'cat file1 file2 > output',
     'cd dir',
@@ -193,6 +238,8 @@ testCommandLines = [
     'mv --no-clobber source target',
     'nano file',
     'nano --ignorercfiles',
+    'pgrep process',
+    'pgrep --list-full process',
     'ping host',
     'ping -c 10 host',
     'ps aux | grep string',
@@ -233,21 +280,24 @@ executable = '../target/release/cli_assist'
 
 for commandLine in testCommandLines:
     test(commandLine)
+
 print('===========================================================\n')
 
-print(f'Character swap: {charSwapSuccess}/{len(testCommandLines)}')
-print(f'Missing character: {missingCharSuccess}/{len(testCommandLines)}')
-print(f'Extra character: {extraCharSuccess}/{len(testCommandLines)}')
-print(f'Nearby character: {nearbyCharSuccess}/{len(testCommandLines)}')
-print(f'Skipped space: {skippedSpaceSuccess}/{len(testCommandLines)}')
-print(f'Random space: {randomSpaceSuccess}/{len(testCommandLines)}')
-print(f'Repeated character: {repeatedCharSuccess}/{len(testCommandLines)}')
-print(f'Unicharacter: {unicharSuccess}/{len(testCommandLines)}')
+print(f'Character swap: {charSwapSuccess}/{len(testCommandLines)-charSwapSkips}')
+print(f'Missing character: {missingCharSuccess}/{len(testCommandLines)-missingCharSkips}')
+print(f'Extra character: {extraCharSuccess}/{len(testCommandLines)-extraCharSkips}')
+print(f'Nearby character: {nearbyCharSuccess}/{len(testCommandLines)-nearbyCharSkips}')
+print(f'Skipped space: {skippedSpaceSuccess}/{len(testCommandLines)-skippedSpaceSkips}')
+print(f'Random space: {randomSpaceSuccess}/{len(testCommandLines)-randomSpaceSkips}')
+print(f'Repeated character: {repeatedCharSuccess}/{len(testCommandLines)-repeatedCharSkips}')
+print(f'Unicharacter: {unicharSuccess}/{len(testCommandLines)-unicharSkips}')
 
 print('\n===========================================================\n')
 
 print('TOTAL')
 print(f'Successes: {success}')
-print(f'Failures: {failure}')
+print(f'Partial corrections: {partialCorrection}')
+print(f'Missing corrections: {noCorrection}')
+print(f'Skips: {skipped}')
 print(f'Errors: {error}')
 

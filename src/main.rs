@@ -44,7 +44,7 @@ fn run(args: &Args) -> Result<()> {
     }
 
     let command = match &args.command {
-        Some(c) => c.trim(),
+        Some(c) => c.trim().trim_matches(['\'', '"']),
         None => &get_previous_command(shell)?,
     };
 
