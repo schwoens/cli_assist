@@ -1,0 +1,1119 @@
+cat --number file; length: 17
+
+character swap: cat --nubmer file ... ('success', None)
+missing character: ct --number file ... ('partial success', 'at --number file')
+extra character: cat --numvber file ... ('success', None)
+nearby character: cat --numbef file ... ('success', None)
+skipped space: cat --numberfile ... ('no correction', 'No correction available')
+random space: cat --number f ile ... ('no correction', 'No correction available')
+repeated character: ccat --number file ... ('success', None)
+unicharacter: cat -number file ... ('no correction', 'No correction available')
+
+cat file1 file2 > output; length: 24
+
+character swap: cat file1 file2 > outptu ... ('no correction', 'No correction available')
+missing character: cat file1 file2 > outut ... ('no correction', 'No correction available')
+extra character: cat file1 file2 > outpyut ... ('no correction', 'No correction available')
+nearby character: cat file1 file2 > outpuy ... ('no correction', 'No correction available')
+skipped space: cat file1 file2 >output ... ('no correction', 'No correction available')
+random space: cat f ile1 file2 > output ... ('no correction', 'No correction available')
+repeated character: cat file1 file2 > ooutput ... ('no correction', 'No correction available')
+unicharacter: cat file1 file2 > output ... ('skipped', None)
+
+cd dir; length: 6
+
+character swap: cd dri ... ('partial success', 'cc dri')
+missing character: cd dr ... ('partial success', 'cc dr')
+extra character: vcd dir ... ('partial success', 'atd dir')
+nearby character: cd dkr ... ('partial success', 'cc dkr')
+skipped space: cddir ... ('partial success', 'dir')
+random space: c d dir ... ('partial success', 'X d dir')
+repeated character: cd ddir ... ('partial success', 'cc ddir')
+unicharacter: cd dir ... ('skipped', None)
+
+cd ..; length: 5
+
+character swap: dc .. ... ('no correction', 'No correction available')
+missing character: d .. ... ('partial success', 'X ..')
+extra character: dcd .. ... ('partial success', 'dc ..')
+nearby character: dd .. ... ('no correction', 'No correction available')
+skipped space: cd.. ... ('no correction', 'No correction available')
+random space:  cd .. ... ('partial success', 'cc ..')
+repeated character: cdd .. ... ('partial success', 'dd ..')
+unicharacter: cd . ... ('partial success', 'cc .')
+
+chmod u+x file; length: 14
+
+character swap: cmhod u+x file ... ('success', None)
+missing character: hmod u+x file ... ('success', None)
+extra character: cjhmod u+x file ... ('success', None)
+nearby character: chmod u+x fils ... ('no correction', 'No correction available')
+skipped space: chmodu+x file ... ('no correction', 'No correction available')
+random space: chmod u+x fil e ... ('no correction', 'No correction available')
+repeated character: chmod u+xx file ... ('no correction', 'No correction available')
+unicharacter: chmod u+x file ... ('skipped', None)
+
+chmod --recursive g+w,o+w dir; length: 29
+
+character swap: chmod --recrusive g+w,o+w dir ... ('success', None)
+missing character: cmod --recursive g+w,o+w dir ... ('success', None)
+extra character: chmod --recurasive g+w,o+w dir ... ('success', None)
+nearby character: chmod --recufsive g+w,o+w dir ... ('success', None)
+skipped space: chmod --recursive g+w,o+wdir ... ('no correction', 'No correction available')
+random space: chmod --recu rsive g+w,o+w dir ... ('no correction', 'No correction available')
+repeated character: chmod --recursive g+ww,o+w dir ... ('no correction', 'No correction available')
+unicharacter: chmod -recursive g+w,o+w dir ... ('no correction', 'No correction available')
+
+chown user file; length: 15
+
+character swap: chonw user file ... ('partial success', 'chfn user file')
+missing character: chown ser file ... ('no correction', 'No correction available')
+extra character: chpown user file ... ('success', None)
+nearby character: chown hser file ... ('no correction', 'No correction available')
+skipped space: chownuser file ... ('no correction', 'No correction available')
+random space:  chown user file ... ('no correction', 'No correction available')
+repeated character: chown uuser file ... ('no correction', 'No correction available')
+unicharacter: chown user file ... ('skipped', None)
+
+chown --no-dereference user symlink; length: 35
+
+character swap: hcown --no-dereference user symlink ... ('success', None)
+missing character: chown --no-dereference user ymlink ... ('no correction', 'No correction available')
+extra character: chown --no-dereference usrer symlink ... ('no correction', 'No correction available')
+nearby character: chown --no-dereference uwer symlink ... ('no correction', 'No correction available')
+skipped space: chown --no-dereference usersymlink ... ('no correction', 'No correction available')
+random space: chown --no-dereferen ce user symlink ... ('partial success', 'chown --no-dereference ce user symlink')
+repeated character: chhown --no-dereference user symlink ... ('success', None)
+unicharacter: chown -no-dereference user symlink ... ('success', None)
+
+clear; length: 5
+
+character swap: claer ... ('partial success', 'clang')
+missing character: clea ... ('success', None)
+extra character: cleatr ... ('success', None)
+nearby character: cldar ... ('success', None)
+skipped space: clear ... ('skipped', None)
+random space: cle ar ... ('partial success', 'c++ ar')
+repeated character: cllear ... ('success', None)
+unicharacter: clear ... ('skipped', None)
+
+clear -x; length: 8
+
+character swap: clera -x ... ('success', None)
+missing character: lear -x ... ('success', None)
+extra character: cleafr -x ... ('success', None)
+nearby character: clear -d ... ('no correction', 'No correction available')
+skipped space: clear-x ... ('partial success', 'clear')
+random space: c lear -x ... ('partial success', 'X lear -x')
+repeated character: cleear -x ... ('success', None)
+unicharacter: clear -x ... ('skipped', None)
+
+cp file dest; length: 12
+
+character swap: cp file edst ... ('no correction', 'No correction available')
+missing character: cp fil dest ... ('no correction', 'No correction available')
+extra character: cp fiple dest ... ('no correction', 'No correction available')
+nearby character: cp fole dest ... ('no correction', 'No correction available')
+skipped space: cpfile dest ... ('partial success', 'file dest')
+random space: cp  file dest ... ('no correction', 'No correction available')
+repeated character: cp filee dest ... ('no correction', 'No correction available')
+unicharacter: cp file dest ... ('skipped', None)
+
+cp --verbose --recursive dir dest; length: 33
+
+character swap: cp --verbose --reucrsive dir dest ... ('success', None)
+missing character: cp --verbose --ecursive dir dest ... ('success', None)
+extra character: cp --cverbose --recursive dir dest ... ('success', None)
+nearby character: cp --vervose --recursive dir dest ... ('success', None)
+skipped space: cp --verbose--recursive dir dest ... ('no correction', 'No correction available')
+random space: cp --verbose --re cursive dir dest ... ('no correction', 'No correction available')
+repeated character: cp --verbose --recursive dir deest ... ('no correction', 'No correction available')
+unicharacter: cp -verbose --recursive dir dest ... ('no correction', 'No correction available')
+
+curl https://example.com; length: 24
+
+character swap: ucrl https://example.com ... ('partial success', 'cal https://example.com')
+missing character: curl https://xample.com ... ('no correction', 'No correction available')
+extra character: curl https://example.dcom ... ('no correction', 'No correction available')
+nearby character: durl https://example.com ... ('success', None)
+skipped space: curlhttps://example.com ... ('no correction', 'No correction available')
+random space: curl https://examp le.com ... ('no correction', 'No correction available')
+repeated character: curl https://example.ccom ... ('no correction', 'No correction available')
+unicharacter: curl htps://example.com ... ('no correction', 'No correction available')
+
+curl --location --dump-header - https://example.com; length: 51
+
+character swap: curl --location --dump-header - thtps://example.com ... ('no correction', 'No correction available')
+missing character: url --location --dump-header - https://example.com ... ('success', None)
+extra character: xcurl --location --dump-header - https://example.com ... ('success', None)
+nearby character: curl --location --dump-header - https://wxample.com ... ('no correction', 'No correction available')
+skipped space: curl --location --dump-header- https://example.com ... ('partial success', 'curl --location --dump-header https://example.com')
+random space: curl --location --dump-header - htt ps://example.com ... ('no correction', 'No correction available')
+repeated character: curl --location --dump-header - htttps://example.com ... ('no correction', 'No correction available')
+unicharacter: curl --location --dump-header - htps://example.com ... ('no correction', 'No correction available')
+
+date +%c; length: 8
+
+character swap: daet +%c ... ('partial success', 'at +%c')
+missing character: dae +%c ... ('success', None)
+extra character: date +%dc ... ('no correction', 'No correction available')
+nearby character: eate +%c ... ('success', None)
+skipped space: date+%c ... ('no correction', 'No correction available')
+random space:  date +%c ... ('no correction', 'No correction available')
+repeated character: datte +%c ... ('success', None)
+unicharacter: date +%c ... ('skipped', None)
+
+date --date @1473305798; length: 23
+
+character swap: date --adte @1473305798 ... ('success', None)
+missing character: date --date @473305798 ... ('no correction', 'No correction available')
+extra character: dsate --date @1473305798 ... ('success', None)
+nearby character: date --date @1473305788 ... ('no correction', 'No correction available')
+skipped space: date --date@1473305798 ... ('no correction', 'No correction available')
+random space: date --date @ 1473305798 ... ('no correction', 'No correction available')
+repeated character: date --date @14733057988 ... ('no correction', 'No correction available')
+unicharacter: date -date @1473305798 ... ('no correction', 'No correction available')
+
+dd if=file.iso of=/dev/drive status=progress; length: 44
+
+character swap: dd if=file.iso of=/dev/driev status=progress ... ('no correction', 'No correction available')
+missing character: dd if=file.is of=/dev/drive status=progress ... ('no correction', 'No correction available')
+extra character: dd if=file.iso iof=/dev/drive status=progress ... ('no correction', 'No correction available')
+nearby character: dd if=file.iso of=/dev/drive status=progrdss ... ('no correction', 'No correction available')
+skipped space: dd if=file.iso of=/dev/drivestatus=progress ... ('no correction', 'No correction available')
+random space: dd if=file.is o of=/dev/drive status=progress ... ('no correction', 'No correction available')
+repeated character: ddd if=file.iso of=/dev/drive status=progress ... ('success', None)
+unicharacter: dd if=file.iso of=/dev/drive status=progres ... ('no correction', 'No correction available')
+
+dd bs=4M conv=fsync if=/dev/drive of=/dev/destdf; length: 48
+
+character swap: dd bs=4M ocnv=fsync if=/dev/drive of=/dev/destdf ... ('no correction', 'No correction available')
+missing character: dd bs=4M conv=fsync if=/dv/drive of=/dev/destdf ... ('no correction', 'No correction available')
+extra character: sdd bs=4M conv=fsync if=/dev/drive of=/dev/destdf ... ('success', None)
+nearby character: dd bs=4M conv=fsync if=/dev/ddive of=/dev/destdf ... ('no correction', 'No correction available')
+skipped space: dd bs=4M conv=fsyncif=/dev/drive of=/dev/destdf ... ('no correction', 'No correction available')
+random space: dd bs=4M conv=fsy nc if=/dev/drive of=/dev/destdf ... ('no correction', 'No correction available')
+repeated character: dd bs=4M conv=fsync if=/dev/drivee of=/dev/destdf ... ('no correction', 'No correction available')
+unicharacter: d bs=4M conv=fsync if=/dev/drive of=/dev/destdf ... ('partial success', 'X bs=4M conv=fsync if=/Xev/Xrive of=/Xev/XestXf')
+
+df --human-readable; length: 19
+
+character swap: df --human-readbale ... ('success', None)
+missing character: d --human-readable ... ('partial success', 'X --human-reaXable')
+extra character: df --human-rdeadable ... ('success', None)
+nearby character: df --hujan-readable ... ('success', None)
+skipped space: df--human-readable ... ('no correction', 'No correction available')
+random space: df --hum an-readable ... ('no correction', 'No correction available')
+repeated character: df --huuman-readable ... ('success', None)
+unicharacter: df -human-readable ... ('success', None)
+
+diff file1 file2; length: 16
+
+character swap: idff file1 file2 ... ('partial success', 'df file1 file2')
+missing character: dif file1 file2 ... ('partial success', 'df file1 file2')
+extra character: xdiff file1 file2 ... ('success', None)
+nearby character: riff file1 file2 ... ('success', None)
+skipped space: diff file1file2 ... ('no correction', 'No correction available')
+random space: di ff file1 file2 ... ('partial success', 'dc ff file1 file2')
+repeated character: diff filee1 file2 ... ('no correction', 'No correction available')
+unicharacter: dif file1 file2 ... ('partial success', 'df file1 file2')
+
+diff --ignore-all-space file1 file2; length: 35
+
+character swap: diff --ignore-all-spaec file1 file2 ... ('success', None)
+missing character: diff --ignore-all-space file1 fle2 ... ('no correction', 'No correction available')
+extra character: diff --ignore-all-space gfile1 file2 ... ('no correction', 'No correction available')
+nearby character: diff --ignore-all-spave file1 file2 ... ('success', None)
+skipped space: diff --ignore-all-space file1file2 ... ('no correction', 'No correction available')
+random space: diff --ignore-all-space file1 file 2 ... ('no correction', 'No correction available')
+repeated character: diff --ignore-all-space ffile1 file2 ... ('no correction', 'No correction available')
+unicharacter: diff -ignore-all-space file1 file2 ... ('success', None)
+
+echo "Hello World" >> file; length: 26
+
+character swap: echo "Hello World" >> file ... ('skipped', None)
+missing character: echo "Helo World" >> file ... ('no correction', 'No correction available')
+extra character: echko "Hello World" >> file ... ('success', None)
+nearby character: ecjo "Hello World" >> file ... ('success', None)
+skipped space: echo "Hello World" >>file ... ('no correction', 'No correction available')
+random space: echo "H ello World" >> file ... ('no correction', 'No correction available')
+repeated character: echo "Heello World" >> file ... ('no correction', 'No correction available')
+unicharacter: echo "Hello World" > file ... ('no correction', 'No correction available')
+
+echo "path: $PATH"; length: 18
+
+character swap: echo "path: $PTAH" ... ('no correction', 'No correction available')
+missing character: echo "path: $PAH" ... ('no correction', 'No correction available')
+extra character: ecgho "path: $PATH" ... ('partial success', 'echo "path: $PATH')
+nearby character: wcho "path: $PATH" ... ('partial success', 'echo "path: $PATH')
+skipped space: echo "path:$PATH" ... ('no correction', 'No correction available')
+random space: echo "path: $P ATH" ... ('no correction', 'No correction available')
+repeated character: echo "paath: $PATH" ... ('no correction', 'No correction available')
+unicharacter: echo "path: $PATH" ... ('skipped', None)
+
+exit; length: 4
+
+character swap: xeit ... ('partial success', 'git')
+missing character: eit ... ('partial success', 'git')
+extra character: ezxit ... ('no correction', 'No correction available')
+nearby character: esit ... ('partial success', 'git')
+skipped space: exit ... ('skipped', None)
+random space: exi t ... ('partial success', 'exa t')
+repeated character: exiit ... ('partial success', 'exiv2')
+unicharacter: exit ... ('skipped', None)
+
+exit 1; length: 6
+
+character swap: eixt 1 ... ('partial success', 'exa 1')
+missing character: ext 1 ... ('partial success', 'exa 1')
+extra character: exit 21 ... ('partial success', 'exa 21')
+nearby character: sxit 1 ... ('partial success', 'spit 1')
+skipped space: exit1 ... ('partial success', 'exiv2')
+random space:  exit 1 ... ('partial success', 'exa 1')
+repeated character: exitt 1 ... ('partial success', 'exiv2 1')
+unicharacter: exit 1 ... ('skipped', None)
+
+file path; length: 9
+
+character swap: flie path ... ('partial success', 'false path')
+missing character: fle path ... ('success', None)
+extra character: fjile path ... ('success', None)
+nearby character: filr path ... ('success', None)
+skipped space: filepath ... ('partial success', 'winepath')
+random space: fi le path ... ('partial success', 'fd le path')
+repeated character: ffile path ... ('success', None)
+unicharacter: file path ... ('skipped', None)
+
+file --uncompress path; length: 22
+
+character swap: file --unocmpress path ... ('success', None)
+missing character: file --ucompress path ... ('success', None)
+extra character: file --undcompress path ... ('success', None)
+nearby character: tile --uncompress path ... ('success', None)
+skipped space: file--uncompress path ... ('no correction', 'No correction available')
+random space: file --unco mpress path ... ('no correction', 'No correction available')
+repeated character: file --uncompress pathh ... ('no correction', 'No correction available')
+unicharacter: file --uncompres path ... ('success', None)
+
+find file -name "*.ext"; length: 23
+
+character swap: find file -naem "*.ext" ... ('no correction', 'No correction available')
+missing character: find fil -name "*.ext" ... ('no correction', 'No correction available')
+extra character: find filse -name "*.ext" ... ('no correction', 'No correction available')
+nearby character: find file -nzme "*.ext" ... ('no correction', 'No correction available')
+skipped space: find file -name"*.ext" ... ('no correction', 'No correction available')
+random space: find file - name "*.ext" ... ('no correction', 'No correction available')
+repeated character: ffind file -name "*.ext" ... ('partial success', 'find file -name "*.ext')
+unicharacter: find file -name "*.ext" ... ('skipped', None)
+
+find file -path "*/path/*/*.ext" -or -name "*pattern*"; length: 54
+
+character swap: find fiel -path "*/path/*/*.ext" -or -name "*pattern*" ... ('no correction', 'No correction available')
+missing character: find fie -path "*/path/*/*.ext" -or -name "*pattern*" ... ('no correction', 'No correction available')
+extra character: find file -path "*/path/*/*.ext" -or -mname "*pattern*" ... ('no correction', 'No correction available')
+nearby character: find file -path "*/path/*/*.edt" -or -name "*pattern*" ... ('no correction', 'No correction available')
+skipped space: find file -path "*/path/*/*.ext"-or -name "*pattern*" ... ('no correction', 'No correction available')
+random space: find file -path "*/path/*/*.ext" -or -name "*p attern*" ... ('no correction', 'No correction available')
+repeated character: find file -path "*/path/*/*.ext" -or -name "*ppattern*" ... ('no correction', 'No correction available')
+unicharacter: find file -path "*/path/*/*.ext" -or -name "*patern*" ... ('no correction', 'No correction available')
+
+ftp ftp.example.com; length: 19
+
+character swap: ftp tfp.example.com ... ('partial success', 'fdp tfp.example.com')
+missing character: ftp ftp.exmple.com ... ('partial success', 'fdp fdp.exmple.com')
+extra character: ftp ftp.example.conm ... ('partial success', 'fdp fdp.example.conm')
+nearby character: ftp ftp.examppe.com ... ('partial success', 'fdp fdp.examppe.com')
+skipped space: ftpftp.example.com ... ('no correction', 'No correction available')
+random space: ftp ftp .example.com ... ('partial success', 'fdp fdp .example.com')
+repeated character: ftp ftpp.example.com ... ('partial success', 'fdp fdpp.example.com')
+unicharacter: ftp ftp.example.com ... ('skipped', None)
+
+ftp 192.168.1 34; length: 16
+
+character swap: fpt 192.168.1 34 ... ('partial success', 'fmt 192.168.1 34')
+missing character: ftp 192.16.1 34 ... ('partial success', 'fdp 192.16.1 34')
+extra character: ftp 192.168.1 434 ... ('partial success', 'fdp 192.168.1 434')
+nearby character: ftp 192.168.1 44 ... ('partial success', 'fdp 192.168.1 44')
+skipped space: ftp192.168.1 34 ... ('no correction', 'No correction available')
+random space: ft p 192.168.1 34 ... ('partial success', 'at p 192.168.1 34')
+repeated character: ftp 192.1688.1 34 ... ('partial success', 'fdp 192.1688.1 34')
+unicharacter: ftp 192.168.1 34 ... ('skipped', None)
+
+git init; length: 8
+
+character swap: git inti ... ('no correction', 'No correction available')
+missing character: git ini ... ('no correction', 'No correction available')
+extra character: git inoit ... ('no correction', 'No correction available')
+nearby character: git ihit ... ('no correction', 'No correction available')
+skipped space: gitinit ... ('partial success', 'gpsinit')
+random space: g it init ... ('partial success', 'X it init')
+repeated character: gitt init ... ('success', None)
+unicharacter: git init ... ('skipped', None)
+
+git add --all; length: 13
+
+character swap: igt add --all ... ('partial success', 'at add --all')
+missing character: git dd --all ... ('no correction', 'No correction available')
+extra character: git axdd --all ... ('no correction', 'No correction available')
+nearby character: git ade --all ... ('no correction', 'No correction available')
+skipped space: git add--all ... ('no correction', 'No correction available')
+random space: git add --a ll ... ('partial success', 'git add --all ll')
+repeated character: git add --alll ... ('success', None)
+unicharacter: git add -all ... ('no correction', 'No correction available')
+
+grep "pattern" file; length: 19
+
+character swap: grep "ptatern" file ... ('no correction', 'No correction available')
+missing character: grep "pattrn" file ... ('no correction', 'No correction available')
+extra character: grep "psattern" file ... ('no correction', 'No correction available')
+nearby character: grep "pattern" dile ... ('no correction', 'No correction available')
+skipped space: grep "pattern"file ... ('no correction', 'No correction available')
+random space: grep "pattern " file ... ('no correction', 'No correction available')
+repeated character: grepp "pattern" file ... ('success', None)
+unicharacter: grep "patern" file ... ('no correction', 'No correction available')
+
+grep --fixed-strings "string" file; length: 34
+
+character swap: grep --fxied-strings "string" file ... ('success', None)
+missing character: grp --fixed-strings "string" file ... ('success', None)
+extra character: greop --fixed-strings "string" file ... ('success', None)
+nearby character: grep --fixex-strings "string" file ... ('success', None)
+skipped space: grep--fixed-strings "string" file ... ('no correction', 'No correction available')
+random space: grep --fixe d-strings "string" file ... ('partial success', 'grep --file d-strings "string" file')
+repeated character: grep --fixed-strings "sstring" file ... ('no correction', 'No correction available')
+unicharacter: grep -fixed-strings "string" file ... ('success', None)
+
+gzip file; length: 9
+
+character swap: gizp file ... ('partial success', 'gimp file')
+missing character: gzp file ... ('success', None)
+extra character: gzilp file ... ('success', None)
+nearby character: gzip fipe ... ('no correction', 'No correction available')
+skipped space: gzipfile ... ('no correction', 'No correction available')
+random space: gz ip file ... ('partial success', 'gc ip file')
+repeated character: gzip filee ... ('no correction', 'No correction available')
+unicharacter: gzip file ... ('skipped', None)
+
+gzip --decompress file; length: 22
+
+character swap: gzip --decomperss file ... ('success', None)
+missing character: zip --decompress file ... ('success', None)
+extra character: gzip --decompress fikle ... ('no correction', 'No correction available')
+nearby character: gzip --decompress fkle ... ('no correction', 'No correction available')
+skipped space: gzip --decompressfile ... ('no correction', 'No correction available')
+random space: gzip --decompre ss file ... ('partial success', 'gzip --decompress ss file')
+repeated character: gzip --decompresss file ... ('success', None)
+unicharacter: gzip --decompres file ... ('success', None)
+
+head file; length: 9
+
+character swap: head fiel ... ('no correction', 'No correction available')
+missing character: hed file ... ('success', None)
+extra character: heacd file ... ('success', None)
+nearby character: heqd file ... ('success', None)
+skipped space: headfile ... ('no correction', 'No correction available')
+random space: head  file ... ('no correction', 'No correction available')
+repeated character: head filee ... ('no correction', 'No correction available')
+unicharacter: head file ... ('skipped', None)
+
+head --lines 5 file; length: 19
+
+character swap: head --linse 5 file ... ('success', None)
+missing character: head --lines 5 fle ... ('no correction', 'No correction available')
+extra character: head --lkines 5 file ... ('success', None)
+nearby character: hsad --lines 5 file ... ('success', None)
+skipped space: head --lines 5file ... ('no correction', 'No correction available')
+random space:  head --lines 5 file ... ('no correction', 'No correction available')
+repeated character: head --lines 5 filee ... ('no correction', 'No correction available')
+unicharacter: head -lines 5 file ... ('no correction', 'No correction available')
+
+history; length: 7
+
+character swap: hitsory ... ('no correction', 'No correction available')
+missing character: hisory ... ('no correction', 'No correction available')
+extra character: historhy ... ('no correction', 'No correction available')
+nearby character: bistory ... ('no correction', 'No correction available')
+skipped space: history ... ('skipped', None)
+random space: hist ory ... ('partial success', 'ahost ory')
+repeated character: histtory ... ('no correction', 'No correction available')
+unicharacter: history ... ('skipped', None)
+
+history 20 | wc; length: 15
+
+character swap: history 02 | wc ... ('no correction', 'No correction available')
+missing character: hisory 20 | wc ... ('no correction', 'No correction available')
+extra character: hisytory 20 | wc ... ('no correction', 'No correction available')
+nearby character: history 20 | sc ... ('no correction', 'No correction available')
+skipped space: history20 | wc ... ('no correction', 'No correction available')
+random space: histor y 20 | wc ... ('no correction', 'No correction available')
+repeated character: historry 20 | wc ... ('no correction', 'No correction available')
+unicharacter: history 20 | wc ... ('skipped', None)
+
+ifconfig name; length: 13
+
+character swap: ifconfig nmae ... ('partial success', 'ldconfig nmae')
+missing character: ifconig name ... ('no correction', 'No correction available')
+extra character: ifconfig namre ... ('partial success', 'ldconfig namre')
+nearby character: ifconfig nsme ... ('partial success', 'ldconfig nsme')
+skipped space: ifconfigname ... ('no correction', 'No correction available')
+random space: ifconfig nam e ... ('partial success', 'ldconfig nam e')
+repeated character: ifconfig naame ... ('partial success', 'ldconfig naame')
+unicharacter: ifconfig name ... ('skipped', None)
+
+ifconfig -a; length: 11
+
+character swap: ifconfgi -a ... ('no correction', 'No correction available')
+missing character: ifconfi -a ... ('no correction', 'No correction available')
+extra character: ifcobnfig -a ... ('no correction', 'No correction available')
+nearby character: ifconfig -s ... ('partial success', 'ldconfig -s')
+skipped space: ifconfig-a ... ('no correction', 'No correction available')
+random space: ifconfig - a ... ('partial success', 'ldconfig - a')
+repeated character: iifconfig -a ... ('no correction', 'No correction available')
+unicharacter: ifconfig -a ... ('skipped', None)
+
+join file1 file2; length: 16
+
+character swap: joni file1 file2 ... ('success', None)
+missing character: join fle1 file2 ... ('no correction', 'No correction available')
+extra character: join file1 fiple2 ... ('no correction', 'No correction available')
+nearby character: join file0 file2 ... ('no correction', 'No correction available')
+skipped space: joinfile1 file2 ... ('no correction', 'No correction available')
+random space: join file1 fi le2 ... ('no correction', 'No correction available')
+repeated character: join fiile1 file2 ... ('no correction', 'No correction available')
+unicharacter: join file1 file2 ... ('skipped', None)
+
+join -t ; length: 8
+
+character swap: ojin -t  ... ('partial success', 'jiv -t')
+missing character: oin -t  ... ('partial success', 'join -t')
+extra character: joibn -t  ... ('partial success', 'join -t')
+nearby character: koin -t  ... ('partial success', 'join -t')
+skipped space: join -t ... ('no correction', 'No correction available')
+random space: joi n -t  ... ('partial success', 'join n -t')
+repeated character: joinn -t  ... ('partial success', 'join -t')
+unicharacter: join -t  ... ('skipped', None)
+
+ file1 file2; length: 12
+
+character swap:  fil1e file2 ... ('partial success', 'file file2')
+missing character:  fle1 file2 ... ('partial success', 'flex file2')
+extra character:  fkile1 file2 ... ('partial success', 'file file2')
+nearby character:  fjle1 file2 ... ('partial success', 'file file2')
+skipped space: file1 file2 ... ('partial success', 'file file2')
+random space:   file1 file2 ... ('partial success', 'file file2')
+repeated character:  file1 filee2 ... ('partial success', 'file filee2')
+unicharacter:  file1 file2 ... ('skipped', None)
+
+kill pid; length: 8
+
+character swap: kill pid ... ('skipped', None)
+missing character: kil pid ... ('success', None)
+extra character: kill pisd ... ('no correction', 'No correction available')
+nearby character: jill pid ... ('success', None)
+skipped space: killpid ... ('no correction', 'No correction available')
+random space: kill pi d ... ('no correction', 'No correction available')
+repeated character: kiill pid ... ('success', None)
+unicharacter: kil pid ... ('success', None)
+
+kill --table; length: 12
+
+character swap: kill --tabel ... ('success', None)
+missing character: kil --table ... ('success', None)
+extra character: kilol --table ... ('success', None)
+nearby character: kill --tablr ... ('success', None)
+skipped space: kill--table ... ('no correction', 'No correction available')
+random space: kil l --table ... ('partial success', 'kill l --table')
+repeated character: kill --tablle ... ('success', None)
+unicharacter: kill -table ... ('no correction', 'No correction available')
+
+less file; length: 9
+
+character swap: elss file ... ('partial success', 'elc3 file')
+missing character: les file ... ('success', None)
+extra character: less fiple ... ('no correction', 'No correction available')
+nearby character: oess file ... ('success', None)
+skipped space: lessfile ... ('no correction', 'No correction available')
+random space: les s file ... ('partial success', 'less s file')
+repeated character: less fille ... ('no correction', 'No correction available')
+unicharacter: les file ... ('success', None)
+
+less file | cat; length: 15
+
+character swap: less file | act ... ('partial success', 'less file | at')
+missing character: less fil | cat ... ('no correction', 'No correction available')
+extra character: lexss file | cat ... ('success', None)
+nearby character: less fkle | cat ... ('no correction', 'No correction available')
+skipped space: less file| cat ... ('no correction', 'No correction available')
+random space: less  file | cat ... ('no correction', 'No correction available')
+repeated character: less file | caat ... ('success', None)
+unicharacter: les file | cat ... ('success', None)
+
+ln --symbolic path symlink; length: 26
+
+character swap: ln --symbolic path smylink ... ('no correction', 'No correction available')
+missing character: ln --symboli path symlink ... ('success', None)
+extra character: ln --sykmbolic path symlink ... ('success', None)
+nearby character: ln --symbolic path symoink ... ('no correction', 'No correction available')
+skipped space: ln --symbolic pathsymlink ... ('no correction', 'No correction available')
+random space: ln --sy mbolic path symlink ... ('no correction', 'No correction available')
+repeated character: ln --symboliic path symlink ... ('success', None)
+unicharacter: ln -symbolic path symlink ... ('no correction', 'No correction available')
+
+ln --symbolic --force path symlink; length: 34
+
+character swap: ln --symbolic --force ptah symlink ... ('no correction', 'No correction available')
+missing character: ln --smbolic --force path symlink ... ('success', None)
+extra character: ln --symbolic --fporce path symlink ... ('success', None)
+nearby character: ln --symbopic --force path symlink ... ('success', None)
+skipped space: ln --symbolic --forcepath symlink ... ('no correction', 'No correction available')
+random space: ln --symbol ic --force path symlink ... ('partial success', 'ln --symbolic ic --force path symlink')
+repeated character: ln --symboliic --force path symlink ... ('success', None)
+unicharacter: ln -symbolic --force path symlink ... ('no correction', 'No correction available')
+
+ls --all; length: 8
+
+character swap: sl --all ... ('partial success', 'nl --all')
+missing character: ls --ll ... ('success', None)
+extra character: lxs --all ... ('success', None)
+nearby character: ls --sll ... ('success', None)
+skipped space: ls--all ... ('no correction', 'No correction available')
+random space:  ls --all ... ('no correction', 'No correction available')
+repeated character: ls --alll ... ('success', None)
+unicharacter: ls --al ... ('success', None)
+
+ls -l --human-readable; length: 22
+
+character swap: ls -l --uhman-readable ... ('success', None)
+missing character: ls -l --uman-readable ... ('success', None)
+extra character: ls -l --human-rreadable ... ('success', None)
+nearby character: ls -l --human-readabpe ... ('success', None)
+skipped space: ls -l--human-readable ... ('partial success', 'ls --human-readable')
+random space: ls -l --hu man-readable ... ('partial success', 'ls -l --si man-readable')
+repeated character: ls -l --hhuman-readable ... ('success', None)
+unicharacter: ls -l -human-readable ... ('success', None)
+
+man command; length: 11
+
+character swap: mna command ... ('partial success', 'dua command')
+missing character: man commad ... ('no correction', 'No correction available')
+extra character: man cojmmand ... ('no correction', 'No correction available')
+nearby character: man commamd ... ('no correction', 'No correction available')
+skipped space: mancommand ... ('no correction', 'No correction available')
+random space:  man command ... ('no correction', 'No correction available')
+repeated character: man commmand ... ('no correction', 'No correction available')
+unicharacter: man comand ... ('no correction', 'No correction available')
+
+man --where command; length: 19
+
+character swap: man --where commadn ... ('no correction', 'No correction available')
+missing character: man --where cmmand ... ('no correction', 'No correction available')
+extra character: man --where comkmand ... ('no correction', 'No correction available')
+nearby character: mqn --where command ... ('partial success', 'eqn --where command')
+skipped space: man--where command ... ('no correction', 'No correction available')
+random space: man -- where command ... ('partial success', 'man --nh where command')
+repeated character: man --wheree command ... ('success', None)
+unicharacter: man -where command ... ('no correction', 'No correction available')
+
+mkdir dir; length: 9
+
+character swap: mkdir dri ... ('no correction', 'No correction available')
+missing character: mkdir ir ... ('no correction', 'No correction available')
+extra character: mkdir xdir ... ('no correction', 'No correction available')
+nearby character: mkcir dir ... ('success', None)
+skipped space: mkdirdir ... ('no correction', 'No correction available')
+random space: mkdir di r ... ('no correction', 'No correction available')
+repeated character: mkdiir dir ... ('success', None)
+unicharacter: mkdir dir ... ('skipped', None)
+
+mkdir --parents dir; length: 19
+
+character swap: mkdir --praents dir ... ('success', None)
+missing character: mkdir --parents ir ... ('no correction', 'No correction available')
+extra character: mkdir --parents doir ... ('no correction', 'No correction available')
+nearby character: mkdir --parenrs dir ... ('success', None)
+skipped space: mkdir--parents dir ... ('no correction', 'No correction available')
+random space: mkdi r --parents dir ... ('partial success', 'mkdir r --parents dir')
+repeated character: mkdir --parents ddir ... ('no correction', 'No correction available')
+unicharacter: mkdir -parents dir ... ('no correction', 'No correction available')
+
+more file; length: 9
+
+character swap: moer file ... ('partial success', 'mev file')
+missing character: mre file ... ('success', None)
+extra character: mlore file ... ('success', None)
+nearby character: more fild ... ('no correction', 'No correction available')
+skipped space: morefile ... ('no correction', 'No correction available')
+random space: mo re file ... ('partial success', 'go re file')
+repeated character: more fiile ... ('no correction', 'No correction available')
+unicharacter: more file ... ('skipped', None)
+
+more +10 file; length: 13
+
+character swap: moer +10 file ... ('partial success', 'mev +10 file')
+missing character: moe +10 file ... ('partial success', 'moc +10 file')
+extra character: kmore +10 file ... ('success', None)
+nearby character: mors +10 file ... ('success', None)
+skipped space: more+10 file ... ('no correction', 'No correction available')
+random space: more +10 fi le ... ('no correction', 'No correction available')
+repeated character: morre +10 file ... ('success', None)
+unicharacter: more +10 file ... ('skipped', None)
+
+mv source target; length: 16
+
+character swap: mv source traget ... ('no correction', 'No correction available')
+missing character: v source target ... ('partial success', 'X source target')
+extra character: mv asource target ... ('no correction', 'No correction available')
+nearby character: mv soyrce target ... ('no correction', 'No correction available')
+skipped space: mv sourcetarget ... ('no correction', 'No correction available')
+random space: mv source targ et ... ('no correction', 'No correction available')
+repeated character: mmv source target ... ('partial success', 'mev source target')
+unicharacter: mv source target ... ('skipped', None)
+
+mv --no-clobber source target; length: 29
+
+character swap: mv --no-clobber sourec target ... ('no correction', 'No correction available')
+missing character: mv --no-clobber sourc target ... ('no correction', 'No correction available')
+extra character: mv --no-clobber source tartget ... ('no correction', 'No correction available')
+nearby character: kv --no-clobber source target ... ('success', None)
+skipped space: mv--no-clobber source target ... ('no correction', 'No correction available')
+random space: mv --no-c lobber source target ... ('no correction', 'No correction available')
+repeated character: mv --no-clobber source taarget ... ('no correction', 'No correction available')
+unicharacter: mv -no-clobber source target ... ('success', None)
+
+nano file; length: 9
+
+character swap: nano fiel ... ('no correction', 'No correction available')
+missing character: nao file ... ('success', None)
+extra character: jnano file ... ('success', None)
+nearby character: nano fioe ... ('no correction', 'No correction available')
+skipped space: nanofile ... ('no correction', 'No correction available')
+random space: n ano file ... ('partial success', 'X aXo file')
+repeated character: nano ffile ... ('no correction', 'No correction available')
+unicharacter: nano file ... ('skipped', None)
+
+nano --ignorercfiles; length: 20
+
+character swap: nano --ignroercfiles ... ('success', None)
+missing character: nno --ignorercfiles ... ('success', None)
+extra character: nano --ignorercfioles ... ('success', None)
+nearby character: nanp --ignorercfiles ... ('success', None)
+skipped space: nano--ignorercfiles ... ('no correction', 'No correction available')
+random space: na no --ignorercfiles ... ('partial success', 'nl no --ignorercfiles')
+repeated character: nano --ignorrercfiles ... ('success', None)
+unicharacter: nano -ignorercfiles ... ('no correction', 'No correction available')
+
+pgrep process; length: 13
+
+character swap: pgrep prcoess ... ('no correction', 'No correction available')
+missing character: pgrep proces ... ('no correction', 'No correction available')
+extra character: pgrep procdess ... ('no correction', 'No correction available')
+nearby character: pgrep orocess ... ('no correction', 'No correction available')
+skipped space: pgrepprocess ... ('no correction', 'No correction available')
+random space: pgrep  process ... ('no correction', 'No correction available')
+repeated character: pgrep processs ... ('no correction', 'No correction available')
+unicharacter: pgrep proces ... ('no correction', 'No correction available')
+
+pgrep --list-full process; length: 25
+
+character swap: pgrep --ilst-full process ... ('success', None)
+missing character: pgrep --list-ful process ... ('success', None)
+extra character: pgrep --list-full pdrocess ... ('no correction', 'No correction available')
+nearby character: pgrep --pist-full process ... ('success', None)
+skipped space: pgrep --list-fullprocess ... ('no correction', 'No correction available')
+random space: pgrep --list-full  process ... ('no correction', 'No correction available')
+repeated character: pggrep --list-full process ... ('success', None)
+unicharacter: pgrep -list-full process ... ('success', None)
+
+ping host; length: 9
+
+character swap: pign host ... ('partial success', 'gn host')
+missing character: pig host ... ('partial success', 'pg host')
+extra character: pimng host ... ('success', None)
+nearby character: pung host ... ('success', None)
+skipped space: pinghost ... ('no correction', 'No correction available')
+random space: ping  host ... ('no correction', 'No correction available')
+repeated character: piing host ... ('success', None)
+unicharacter: ping host ... ('skipped', None)
+
+ping -c 10 host; length: 15
+
+character swap: pnig -c 10 host ... ('partial success', 'adig -c 10 host')
+missing character: ping - 10 host ... ('no correction', 'No correction available')
+extra character: ping -c 10 hpost ... ('no correction', 'No correction available')
+nearby character: ping -f 10 host ... ('no correction', 'No correction available')
+skipped space: ping -c10 host ... ('no correction', 'No correction available')
+random space: ping - c 10 host ... ('no correction', 'No correction available')
+repeated character: piing -c 10 host ... ('success', None)
+unicharacter: ping -c 10 host ... ('skipped', None)
+
+ps aux | grep string; length: 20
+
+character swap: ps aux | grep stirng ... ('no correction', 'No correction available')
+missing character: ps aux | grep strng ... ('no correction', 'No correction available')
+extra character: ps ajux | grep string ... ('no correction', 'No correction available')
+nearby character: ps aux | grep sgring ... ('no correction', 'No correction available')
+skipped space: ps aux |grep string ... ('no correction', 'No correction available')
+random space: ps aux | gre p string ... ('partial success', 'ps aux | grep p string')
+repeated character: ps aux | grep strinng ... ('no correction', 'No correction available')
+unicharacter: ps aux | grep string ... ('skipped', None)
+
+ps --sort size; length: 14
+
+character swap: ps --sort isze ... ('no correction', 'No correction available')
+missing character: p --sort size ... ('partial success', 'X --sort size')
+extra character: ps --dsort size ... ('success', None)
+nearby character: ps --sorf size ... ('success', None)
+skipped space: ps--sort size ... ('no correction', 'No correction available')
+random space: ps - -sort size ... ('no correction', 'No correction available')
+repeated character: ps --sort sizze ... ('no correction', 'No correction available')
+unicharacter: ps -sort size ... ('no correction', 'No correction available')
+
+pwd; length: 3
+
+character swap: pdw ... ('partial success', 'dc')
+missing character: pw ... ('partial success', 'pg')
+extra character: opwd ... ('success', None)
+nearby character: psd ... ('partial success', 'gpsd')
+skipped space: pwd ... ('skipped', None)
+random space: p wd ... ('partial success', 'X wd')
+repeated character: pwdd ... ('partial success', 'pldd')
+unicharacter: pwd ... ('skipped', None)
+
+pwd --physical; length: 14
+
+character swap: pwd --physcial ... ('success', None)
+missing character: pwd --physicl ... ('success', None)
+extra character: pawd --physical ... ('success', None)
+nearby character: pwd --physicwl ... ('success', None)
+skipped space: pwd--physical ... ('no correction', 'No correction available')
+random space: pwd --ph ysical ... ('no correction', 'No correction available')
+repeated character: pwd --phyysical ... ('success', None)
+unicharacter: pwd -physical ... ('no correction', 'No correction available')
+
+rm file; length: 7
+
+character swap: rm flie ... ('no correction', 'No correction available')
+missing character: r file ... ('partial success', 'X file')
+extra character: rm fikle ... ('no correction', 'No correction available')
+nearby character: rj file ... ('partial success', 'rg file')
+skipped space: rmfile ... ('partial success', 'file')
+random space: rm fi le ... ('no correction', 'No correction available')
+repeated character: rmm file ... ('success', None)
+unicharacter: rm file ... ('skipped', None)
+
+rm --recursive dir; length: 18
+
+character swap: rm --reucrsive dir ... ('success', None)
+missing character: rm --recursiv dir ... ('success', None)
+extra character: rm --recursibve dir ... ('success', None)
+nearby character: rm --eecursive dir ... ('success', None)
+skipped space: rm --recursivedir ... ('no correction', 'No correction available')
+random space: rm --recursive d ir ... ('no correction', 'No correction available')
+repeated character: rrm --recursive dir ... ('success', None)
+unicharacter: rm -recursive dir ... ('no correction', 'No correction available')
+
+ls | sed "s/apple/mango/g"; length: 26
+
+character swap: ls | sed "s/aplpe/mango/g" ... ('no correction', 'No correction available')
+missing character: ls | sed "s/aple/mango/g" ... ('no correction', 'No correction available')
+extra character: pls | sed "s/apple/mango/g" ... ('partial success', 'ls | sed "s/apple/mango/g')
+nearby character: ls | see "s/apple/mango/g" ... ('partial success', 'ls | sed "s/apple/mango/g')
+skipped space: ls| sed "s/apple/mango/g" ... ('no correction', 'No correction available')
+random space: ls | sed "s/apple/mang o/g" ... ('no correction', 'No correction available')
+repeated character: ls | sed "s/aapple/mango/g" ... ('no correction', 'No correction available')
+unicharacter: ls | sed "s/aple/mango/g" ... ('no correction', 'No correction available')
+
+sed --in-place "s/apple/mango/g"; length: 32
+
+character swap: sed --in-plaec "s/apple/mango/g" ... ('partial success', 'sed --in-place "s/apple/mango/g')
+missing character: sed --in-place "s/apple/mang/g" ... ('no correction', 'No correction available')
+extra character: sed --in-pladce "s/apple/mango/g" ... ('partial success', 'sed --in-place "s/apple/mango/g')
+nearby character: sed --in-placs "s/apple/mango/g" ... ('partial success', 'sed --in-place "s/apple/mango/g')
+skipped space: sed --in-place"s/apple/mango/g" ... ('no correction', 'No correction available')
+random space: sed --in-pl ace "s/apple/mango/g" ... ('no correction', 'No correction available')
+repeated character: sed --in-place "s/apple/mangoo/g" ... ('no correction', 'No correction available')
+unicharacter: sed --in-place "s/aple/mango/g" ... ('no correction', 'No correction available')
+
+shutdown -h now; length: 15
+
+character swap: shutdwon -h now ... ('success', None)
+missing character: shutdown -h ow ... ('no correction', 'No correction available')
+extra character: shutdown -h bnow ... ('no correction', 'No correction available')
+nearby character: shutdown -h noe ... ('no correction', 'No correction available')
+skipped space: shutdown -hnow ... ('no correction', 'No correction available')
+random space: shutdown -h  now ... ('no correction', 'No correction available')
+repeated character: shutdoown -h now ... ('success', None)
+unicharacter: shutdown -h now ... ('skipped', None)
+
+shutdown --reboot now; length: 21
+
+character swap: shutdown --rbeoot now ... ('success', None)
+missing character: hutdown --reboot now ... ('success', None)
+extra character: shutdown --reboot hnow ... ('no correction', 'No correction available')
+nearby character: shuteown --reboot now ... ('success', None)
+skipped space: shutdown--reboot now ... ('no correction', 'No correction available')
+random space: shutdown -- reboot now ... ('no correction', 'No correction available')
+repeated character: shutdoown --reboot now ... ('success', None)
+unicharacter: shutdown -reboot now ... ('no correction', 'No correction available')
+
+sleep 10; length: 8
+
+character swap: sleep 01 ... ('no correction', 'No correction available')
+missing character: seep 10 ... ('success', None)
+extra character: sledep 10 ... ('success', None)
+nearby character: skeep 10 ... ('success', None)
+skipped space: sleep10 ... ('partial success', 'sleep')
+random space: sleep  10 ... ('no correction', 'No correction available')
+repeated character: sleeep 10 ... ('success', None)
+unicharacter: slep 10 ... ('success', None)
+
+sleep 30 && ls --all; length: 20
+
+character swap: selep 30 && ls --all ... ('success', None)
+missing character: sleep 3 && ls --all ... ('no correction', 'No correction available')
+extra character: sleep 30 && pls --all ... ('no correction', 'No correction available')
+nearby character: sleep 30 && ld --all ... ('no correction', 'No correction available')
+skipped space: sleep 30 &&ls --all ... ('no correction', 'No correction available')
+random space: s leep 30 && ls --all ... ('partial success', 'X leep 30 && lX --all')
+repeated character: sleep 30 && lss --all ... ('no correction', 'No correction available')
+unicharacter: sleep 30 && ls --al ... ('success', None)
+
+sort file; length: 9
+
+character swap: sotr file ... ('partial success', 'attr file')
+missing character: sort fle ... ('no correction', 'No correction available')
+extra character: sort filre ... ('no correction', 'No correction available')
+nearby character: sory file ... ('success', None)
+skipped space: sortfile ... ('no correction', 'No correction available')
+random space: sort f ile ... ('no correction', 'No correction available')
+repeated character: sort ffile ... ('no correction', 'No correction available')
+unicharacter: sort file ... ('skipped', None)
+
+sort --reverse file; length: 19
+
+character swap: sort --reverse fiel ... ('no correction', 'No correction available')
+missing character: sort --revrse file ... ('success', None)
+extra character: sort --rweverse file ... ('success', None)
+nearby character: sorf --reverse file ... ('success', None)
+skipped space: sort--reverse file ... ('no correction', 'No correction available')
+random space: sort --reverse fi le ... ('no correction', 'No correction available')
+repeated character: sort --reverse fille ... ('no correction', 'No correction available')
+unicharacter: sort -reverse file ... ('no correction', 'No correction available')
+
+ssh username@host; length: 17
+
+character swap: shs username@host ... ('partial success', 'sh username@host')
+missing character: ssh username@ost ... ('no correction', 'No correction available')
+extra character: ssh username@hozst ... ('no correction', 'No correction available')
+nearby character: ssh usrrname@host ... ('no correction', 'No correction available')
+skipped space: sshusername@host ... ('no correction', 'No correction available')
+random space: ssh username@h ost ... ('no correction', 'No correction available')
+repeated character: ssh uusername@host ... ('no correction', 'No correction available')
+unicharacter: sh username@host ... ('no correction', 'No correction available')
+
+ssh -i file username@host; length: 25
+
+character swap: shs -i file username@host ... ('partial success', 'sh -i file username@host')
+missing character: ssh -i file sername@host ... ('no correction', 'No correction available')
+extra character: ssh -i tfile username@host ... ('no correction', 'No correction available')
+nearby character: ssh -i file username@hlst ... ('no correction', 'No correction available')
+skipped space: ssh -i fileusername@host ... ('no correction', 'No correction available')
+random space: ssh -i file username@ host ... ('no correction', 'No correction available')
+repeated character: ssh -ii file username@host ... ('no correction', 'No correction available')
+unicharacter: sh -i file username@host ... ('no correction', 'No correction available')
+
+tail file; length: 9
+
+character swap: atil file ... ('partial success', 'adig file')
+missing character: tail fle ... ('no correction', 'No correction available')
+extra character: tail fikle ... ('no correction', 'No correction available')
+nearby character: tail fole ... ('no correction', 'No correction available')
+skipped space: tailfile ... ('no correction', 'No correction available')
+random space: tail fi le ... ('no correction', 'No correction available')
+repeated character: ttail file ... ('success', None)
+unicharacter: tail file ... ('skipped', None)
+
+tail --lines 5 file; length: 19
+
+character swap: tail --lines 5 fiel ... ('no correction', 'No correction available')
+missing character: til --lines 5 file ... ('success', None)
+extra character: tail --linees 5 file ... ('success', None)
+nearby character: tail --lines 8 file ... ('no correction', 'No correction available')
+skipped space: tail --lines 5file ... ('no correction', 'No correction available')
+random space: tail -- lines 5 file ... ('no correction', 'No correction available')
+repeated character: taail --lines 5 file ... ('success', None)
+unicharacter: tail -lines 5 file ... ('no correction', 'No correction available')
+
+tar cf target file; length: 18
+
+character swap: tar cf target ifle ... ('no correction', 'No correction available')
+missing character: tar c target file ... ('no correction', 'No correction available')
+extra character: tsar cf target file ... ('partial success', 'asar cf target file')
+nearby character: tar cf targer file ... ('no correction', 'No correction available')
+skipped space: tarcf target file ... ('partial success', 'tac target file')
+random space: tar cf ta rget file ... ('no correction', 'No correction available')
+repeated character: tar cf target fiile ... ('no correction', 'No correction available')
+unicharacter: tar cf target file ... ('skipped', None)
+
+tar xvf source; length: 14
+
+character swap: tar xfv source ... ('no correction', 'No correction available')
+missing character: ta xvf source ... ('partial success', 'tac xvf source')
+extra character: tar xvf xsource ... ('no correction', 'No correction available')
+nearby character: yar xvf source ... ('partial success', 'ar xvf source')
+skipped space: tar xvfsource ... ('no correction', 'No correction available')
+random space: tar xvf  source ... ('no correction', 'No correction available')
+repeated character: tar xvf sourcee ... ('no correction', 'No correction available')
+unicharacter: tar xvf source ... ('skipped', None)
+
+top; length: 3
+
+character swap: otp ... ('partial success', 'at')
+missing character: tp ... ('partial success', 'cp')
+extra character: toop ... ('success', None)
+nearby character: too ... ('partial success', 'todo')
+skipped space: top ... ('skipped', None)
+random space:  top ... ('no correction', 'No correction available')
+repeated character: topp ... ('success', None)
+unicharacter: top ... ('skipped', None)
+
+top --idle-toggle; length: 17
+
+character swap: top --idle-tgogle ... ('success', None)
+missing character: top --idle-toggl ... ('success', None)
+extra character: top --idple-toggle ... ('success', None)
+nearby character: top --icle-toggle ... ('success', None)
+skipped space: top--idle-toggle ... ('no correction', 'No correction available')
+random space: top  --idle-toggle ... ('no correction', 'No correction available')
+repeated character: top --idle-ttoggle ... ('success', None)
+unicharacter: top --idle-togle ... ('success', None)
+
+touch file; length: 10
+
+character swap: touch flie ... ('no correction', 'No correction available')
+missing character: touch fle ... ('no correction', 'No correction available')
+extra character: touch fikle ... ('no correction', 'No correction available')
+nearby character: tohch file ... ('success', None)
+skipped space: touchfile ... ('no correction', 'No correction available')
+random space: touch fi le ... ('no correction', 'No correction available')
+repeated character: touch filee ... ('no correction', 'No correction available')
+unicharacter: touch file ... ('skipped', None)
+
+touch --no-create -m file; length: 25
+
+character swap: tocuh --no-create -m file ... ('success', None)
+missing character: touc --no-create -m file ... ('success', None)
+extra character: touch --no-create -m fiole ... ('no correction', 'No correction available')
+nearby character: toucj --no-create -m file ... ('success', None)
+skipped space: touch --no-create -mfile ... ('no correction', 'No correction available')
+random space: touch --no-creat e -m file ... ('partial success', 'touch --no-create e -m file')
+repeated character: touch --no-ccreate -m file ... ('success', None)
+unicharacter: touch -no-create -m file ... ('success', None)
+
+unzip file; length: 10
+
+character swap: unzip ifle ... ('no correction', 'No correction available')
+missing character: nzip file ... ('partial success', 'gzip file')
+extra character: unzip filse ... ('no correction', 'No correction available')
+nearby character: unzip fipe ... ('no correction', 'No correction available')
+skipped space: unzipfile ... ('no correction', 'No correction available')
+random space:  unzip file ... ('no correction', 'No correction available')
+repeated character: unnzip file ... ('success', None)
+unicharacter: unzip file ... ('skipped', None)
+
+unzip -l file; length: 13
+
+character swap: unizp -l file ... ('partial success', 'uniq -l file')
+missing character: unzip -l fie ... ('no correction', 'No correction available')
+extra character: unzip -l foile ... ('no correction', 'No correction available')
+nearby character: jnzip -l file ... ('success', None)
+skipped space: unzip -lfile ... ('no correction', 'No correction available')
+random space: unzip  -l file ... ('no correction', 'No correction available')
+repeated character: unzipp -l file ... ('success', None)
+unicharacter: unzip -l file ... ('skipped', None)
+
+uptime; length: 6
+
+character swap: upitme ... ('success', None)
+missing character: uptme ... ('success', None)
+extra character: upgtime ... ('success', None)
+nearby character: upgime ... ('success', None)
+skipped space: uptime ... ('skipped', None)
+random space: uptim e ... ('partial success', 'uptime e')
+repeated character: uuptime ... ('success', None)
+unicharacter: uptime ... ('skipped', None)
+
+uptime --pretty; length: 15
+
+character swap: uptime --prtety ... ('success', None)
+missing character: uptime --prety ... ('success', None)
+extra character: uptoime --pretty ... ('success', None)
+nearby character: upyime --pretty ... ('success', None)
+skipped space: uptime--pretty ... ('no correction', 'No correction available')
+random space: uptime --pr etty ... ('no correction', 'No correction available')
+repeated character: uptime --preetty ... ('success', None)
+unicharacter: uptime -pretty ... ('no correction', 'No correction available')
+
+wc --lines file; length: 15
+
+character swap: wc --liens file ... ('success', None)
+missing character: w --lines file ... ('no correction', 'No correction available')
+extra character: wc --lines fiple ... ('no correction', 'No correction available')
+nearby character: wc --oines file ... ('success', None)
+skipped space: wc --linesfile ... ('no correction', 'No correction available')
+random space: wc --lines  file ... ('no correction', 'No correction available')
+repeated character: wc --llines file ... ('success', None)
+unicharacter: wc -lines file ... ('no correction', 'No correction available')
+
+wc --words file; length: 15
+
+character swap: wc --wodrs file ... ('success', None)
+missing character: wc --words ile ... ('no correction', 'No correction available')
+extra character: wc --wkords file ... ('success', None)
+nearby character: wv --words file ... ('partial success', 'mv --words file')
+skipped space: wc --wordsfile ... ('no correction', 'No correction available')
+random space:  wc --words file ... ('no correction', 'No correction available')
+repeated character: wcc --words file ... ('partial success', 'cc --words file')
+unicharacter: wc -words file ... ('no correction', 'No correction available')
+
+wget https://example.com; length: 24
+
+character swap: wget thtps://example.com ... ('no correction', 'No correction available')
+missing character: wget http://example.com ... ('no correction', 'No correction available')
+extra character: wget https://esxample.com ... ('no correction', 'No correction available')
+nearby character: wget https://wxample.com ... ('no correction', 'No correction available')
+skipped space: wgethttps://example.com ... ('no correction', 'No correction available')
+random space: wget https://example.co m ... ('no correction', 'No correction available')
+repeated character: wgeet https://example.com ... ('success', None)
+unicharacter: wget htps://example.com ... ('no correction', 'No correction available')
+
+wget --user name --password password https://example.com; length: 56
+
+character swap: wget --user name --paswsord password https://example.com ... ('success', None)
+missing character: wge --user name --password password https://example.com ... ('success', None)
+extra character: wget --user name --password password https://edxample.com ... ('no correction', 'No correction available')
+nearby character: wget --user name --password password https://exanple.com ... ('no correction', 'No correction available')
+skipped space: wget--user name --password password https://example.com ... ('no correction', 'No correction available')
+random space: wget --user name --password passwor d https://example.com ... ('no correction', 'No correction available')
+repeated character: wget --user name --password passwordd https://example.com ... ('no correction', 'No correction available')
+unicharacter: wget --user name --pasword password https://example.com ... ('success', None)
+
+===========================================================
+
+Character swap: 31/32/98
+Missing character: 35/20/100
+Extra character: 42/12/100
+Nearby character: 42/18/100
+Skipped space: 0/12/94
+Random space: 0/35/100
+Repeated character: 43/13/100
+Unicharacter: 18/3/55
+
+===========================================================
+
+TOTAL
+Successes: 211
+Partial successes: 145
+No corrections: 391
+Skips: 53
+Errors: 0
