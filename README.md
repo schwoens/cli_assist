@@ -16,7 +16,6 @@ A CLI tool for correcting typos in UNIX shell command interfaces.
 ```
 git clone https://github.com/schwoens/cli_assist
 cd cli_assist
-
 ```
 
 2. Build executable
