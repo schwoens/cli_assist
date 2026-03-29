@@ -9,6 +9,12 @@ A CLI tool for correcting typos in UNIX shell command interfaces.
 - [Rustup](https://rustup.rs)
 - python >= 3.14 (only necessary for the evaluation script)
 
+## Supported Shells
+
+- Bash
+- Fish
+- Nushell
+
 ## Installation
 
 1. Clone git repository
@@ -24,6 +30,18 @@ cd cli_assist
 ```
 cargo build --release
 ```
+
+### Bash
+
+The shell history has to be updated per command line for the software to work correctly. To get this functionality in bash add
+
+```
+export PROMPT_COMMAND="$PROMPT_COMMAND; history -a"
+
+```
+
+to your `.bashrc` file. This appends the last executed command line immediately after running it.
+
 
 ## Usage
 

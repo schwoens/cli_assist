@@ -8,21 +8,53 @@ use std::{
 
 /// Returns the previously executed command by querying the shell history.
 pub fn get_previous_command(shell: &str) -> Result<String> {
-    let history = String::from_utf8(
-        Command::new(shell)
-            .arg("-c")
-            .arg("history")
-            .output()
-            .context(format!("{} is not a supported shell", shell))?
-            .stdout,
-    )?;
-
-    Ok(history
+    Ok(match shell {
+        s if s.contains("bash") => String::from_utf8(
+            Command::new(shell)
+                .arg("-c")
+                .arg("cat ~/.bash_history")
+                .output()
+                .context("couldn't get shell history")?
+                .stdout,
+        )?
+        .trim()
+        .lines()
+        .rev()
+        .take(1)
+        .last()
+        .context("shell history is empty")?
+        .to_string(),
+        s if s.contains("fish") => String::from_utf8(
+            Command::new(shell)
+                .arg("-c")
+                .arg("history")
+                .output()
+                .context("couldn't get shell history")?
+                .stdout,
+        )?
+        .trim()
         .lines()
         .take(2)
         .last()
         .context("shell history is empty")?
-        .to_string())
+        .to_string(),
+        s if s.contains("nu") => String::from_utf8(
+            Command::new(shell)
+                .arg("-c")
+                .arg("history | get command | to text")
+                .output()
+                .context("couldn't get shell history")?
+                .stdout,
+        )?
+        .trim()
+        .lines()
+        .rev()
+        .take(1)
+        .last()
+        .context("shell history is empty")?
+        .to_string(),
+        _ => bail!("{} is not a supported shell", shell),
+    })
 }
 
 /// Returns a Vec of all available commands on the system by listing every file in every PATH
