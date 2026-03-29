@@ -22,7 +22,6 @@ A CLI tool for correcting typos in UNIX shell command interfaces.
 ```
 git clone https://github.com/schwoens/cli_assist
 cd cli_assist
-
 ```
 
 2. Build executable
@@ -37,7 +36,6 @@ The shell history has to be updated per command line for the software to work co
 
 ```
 export PROMPT_COMMAND="$PROMPT_COMMAND; history -a"
-
 ```
 
 to your `.bashrc` file. This appends the last executed command line immediately after running it.
