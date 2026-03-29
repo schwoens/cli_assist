@@ -32,14 +32,7 @@ cargo build --release
 
 ### Bash
 
-The shell history has to be updated per command line for the software to work correctly. To get this functionality in bash add
-
-```
-export PROMPT_COMMAND="$PROMPT_COMMAND; history -a"
-```
-
-to your `.bashrc` file. This appends the last executed command line immediately after running it.
-
+The shell history has to be updated per command line for the software to work correctly. To get this functionality in bash add `history -a` to your PROMPT_COMMAND environment variable. This appends the last executed command line immediately after running it.
 
 ## Usage
 
